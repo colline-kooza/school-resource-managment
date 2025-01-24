@@ -41,7 +41,7 @@ export default function SiteHeader({ session }: { session: Session | null }) {
   }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <header className="sticky inset-x-0 top-0 lg:top-0 shadow shadow-slate-500 text-green-900 z-50">
+    <header className="sticky bg-white inset-x-0 top-0 lg:top-0 shadow shadow-slate-500 text-green-900 z-50">
       <nav
         aria-label="Global"
         className="flex items-center justify-between p-3 lg:px-8"
