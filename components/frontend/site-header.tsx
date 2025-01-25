@@ -24,11 +24,11 @@ import { BarChart, BookMarked } from "lucide-react";
 
 export default function SiteHeader({ session }: { session: Session | null }) {
   const navigation = [
-    { name: "Resources", href: "/resources" },
-    { name: "Q&A", href: "/qa" },
+    { name: "Community", href: "/community" },
+    { name: "Forum/Q&A", href: "/qa" },
     // { name: "Forum", href: "/forum" },
     { name: "About", href: "/about" },
-    { name: "OTHER TOOLS", href: "/pricing" },
+    { name: "Knowledge Base", href: "/knowledge" },
   ];
   const router = useRouter();
   async function handleLogout() {
@@ -65,7 +65,7 @@ export default function SiteHeader({ session }: { session: Session | null }) {
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm uppercase font-semibold leading-6 text-green-900"
+              className="text-sm font-semibold leading-6 text-green-900"
             >
               {item.name}
             </Link>

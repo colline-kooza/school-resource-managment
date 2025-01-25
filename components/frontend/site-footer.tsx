@@ -1,63 +1,147 @@
-import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
-const Footer = () => {
+
+export default function FooterV2() {
   return (
-    <section className="bg-gray-50 sm:pt-16 lg:pt-24">
-      <footer className="bg-purple-950 text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Kampus Access Ug</h3>
-              <p className="text-sm text-gray-400">Empowering students through shared knowledge and resources</p>
+    <footer className="w-full bg-green-800 text-white">
+      <div className="container px-4 py-16 md:px-6">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <svg
+                className=" h-8 w-8"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              <span className="text-xl font-bold">ADE</span>
             </div>
-            <div>
-              <h4 className="text-md font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
-                <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
-                <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-md font-semibold mb-4">Features</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/papers" className="hover:text-white">Past Papers</Link></li>
-                <li><Link href="/qa" className="hover:text-white">Q&A Platform</Link></li>
-                <li><Link href="/forum" className="hover:text-white">Discussion Forum</Link></li>
-                <li><Link href="/resources" className="hover:text-white">Study Resources</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-md font-semibold mb-4">Connect</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white">
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                  </svg>
-                  <span className="sr-only">Facebook</span>
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                  <span className="sr-only">Twitter</span>
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                  </svg>
-                  <span className="sr-only">GitHub</span>
-                </a>
-              </div>
+            <p className="text-sm text-white/90">
+              Trusted in more than 100 countries & 5 million customers. Have any
+              query? contact us we are here for you.
+            </p>
+            <div className="flex space-x-4">
+              <Link
+                href="#"
+                className="rounded-full bg-white p-2 hover:bg-white/90"
+              >
+                <Twitter className="h-4 w-4 text-green-800" />
+                <span className="sr-only">Twitter</span>
+              </Link>
+              <Link
+                href="#"
+                className="rounded-full bg-white p-2 hover:bg-white/90"
+              >
+                <Instagram className="h-4 w-4 text-green-800" />
+                <span className="sr-only">Instagram</span>
+              </Link>
+              <Link
+                href="#"
+                className="rounded-full bg-white p-2 hover:bg-white/90"
+              >
+                <Linkedin className="h-4 w-4 text-green-800" />
+                <span className="sr-only">LinkedIn</span>
+              </Link>
+              <Link
+                href="#"
+                className="rounded-full bg-white p-2 hover:bg-white/90"
+              >
+                <Youtube className="h-4 w-4 text-green-800" />
+                <span className="sr-only">YouTube</span>
+              </Link>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
-            © 2025 Kampus Access Ug. All rights reserved. <span> <Link href="https://www.owendev.xyz/">Developed by Owen Albert Ngobi</Link> </span>
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold">Get In Touch</h3>
+            <div className="space-y-2 text-sm">
+              <p>support@pagedone.com</p>
+              <p>+91 945 658 3256</p>
+              <p>61-A, Elm street, Gujarat, India.</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold">Quick Links</h3>
+              <nav className="flex flex-col space-y-2 text-sm">
+                <Link className="hover:underline" href="#">
+                  Home
+                </Link>
+                <Link className="hover:underline" href="#">
+                  FAQs
+                </Link>
+                <Link className="hover:underline" href="#">
+                  Price Plan
+                </Link>
+                <Link className="hover:underline" href="#">
+                  Features
+                </Link>
+              </nav>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold invisible">Links</h3>
+              <nav className="flex flex-col space-y-2 text-sm">
+                <Link className="hover:underline" href="#">
+                  Careers
+                </Link>
+                <Link className="hover:underline" href="#">
+                  About
+                </Link>
+                <Link className="hover:underline" href="#">
+                  Contact
+                </Link>
+                <Link className="hover:underline" href="#">
+                  Products
+                </Link>
+              </nav>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold">Newsletter</h3>
+            <form className="space-y-2">
+              <Input
+                className="bg-white/10 border-white/20 placeholder:text-white/50"
+                placeholder="Enter email.."
+                type="email"
+              />
+              <Button
+                className="w-full bg-white text-green-800 hover:bg-white/90"
+                type="submit"
+              >
+                Subscribe
+                <svg
+                  className="ml-2 h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Button>
+            </form>
           </div>
         </div>
-      </footer>
-    </section>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="container flex flex-col items-center justify-center gap-4 py-6 text-center text-sm md:h-16 md:flex-row md:py-0">
+          <div className="text-white/60">
+            Copyright@2023 All Right Reserved Pagedone.
+          </div>
+        </div>
+      </div>
+    </footer>
   );
-};
-export default Footer;
+}

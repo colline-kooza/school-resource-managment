@@ -5,10 +5,10 @@ import { Search, Filter } from 'lucide-react'
 
 export default function ForumLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-cyan-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-green-100 to-cyan-100 dark:from-gray-900 dark:to-gray-800">
       {/* <Header /> */}
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">EduQuest Forum</h1>
+        <h1 className="text-3xl font-bold mb-6">Community</h1>
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="flex-grow">
             <form onSubmit={(e) => e.preventDefault()} className="flex w-full items-center space-x-2">

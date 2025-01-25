@@ -3,7 +3,7 @@ import { TrendingUp, MessageCircle, BookOpen, Award, Leaf } from 'lucide-react';
 
 export default function PreHero() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen px-4 md:px-12 bg-gradient-to-b from-green-50 to-white">
       {/* Hero Section with Background */}
       <div 
         className="h-64 bg-cover bg-center"
