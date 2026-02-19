@@ -99,18 +99,18 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ user, collapsed }) => {
 
   return (
     <aside className={cn(
-      "h-full bg-white border-r border-slate-100 flex flex-col flex-shrink-0 z-40 transition-all duration-300",
+      "h-full bg-white border-r border-slate-100 flex flex-col z-40 transition-all duration-300",
       collapsed ? "w-[80px]" : "w-[280px]"
     )}>
       {/* Brand Logo */}
-      <div className={cn("p-8 pb-6 flex items-center justify-between", collapsed && "p-4 pb-4 justify-center")}>
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 bg-[#1A3A6B] rounded-2xl flex items-center justify-center shadow-xl shadow-[#1A3A6B]/20 transform group-hover:scale-105 transition-all duration-300">
+      <div className={cn("p-8 pb-6 flex items-center justify-between", collapsed && "p-2 pb-6 justify-center")}>
+        <Link href="/" className="flex items-center gap-3 group shrink-0">
+          <div className="relative w-10 h-10 bg-[#1A3A6B] rounded-2xl flex items-center justify-center shadow-xl shadow-[#1A3A6B]/20 transform group-hover:scale-105 transition-all duration-300 shrink-0">
             <span className="text-[#F4A800] font-bold text-xl">B</span>
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-[#F4A800] rounded-full border-2 border-white" />
           </div>
           {!collapsed && (
-            <div>
+            <div className="shrink-0">
               <h2 className="text-lg font-bold leading-none text-[#1A3A6B]">BusiLearn</h2>
               <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-bold">Academic Hub</p>
             </div>
