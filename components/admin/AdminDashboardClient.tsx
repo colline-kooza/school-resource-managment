@@ -88,7 +88,7 @@ const AdminDashboardClient: React.FC<AdminDashboardClientProps> = ({
   };
 
   const StatCard = ({ title, value, icon: Icon, color, subValue }: any) => (
-    <Card className="rounded-3xl border-none shadow-sm overflow-hidden bg-white">
+    <Card className="rounded-xl border-none shadow-xs overflow-hidden bg-white">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
@@ -125,7 +125,7 @@ const AdminDashboardClient: React.FC<AdminDashboardClientProps> = ({
   ];
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-4">
       {/* Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
         <StatCard title="Total Users" value={data.totals.users} icon={Users} color="bg-[#1A3A6B]" />
