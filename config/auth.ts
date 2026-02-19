@@ -1,9 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcrypt";
+import { compare } from "bcryptjs";
 import { db } from "@/prisma/db";
 import { Adapter } from "next-auth/adapters";
 
@@ -14,11 +12,13 @@ declare module "next-auth" {
     role: string;
     firstName: string;
     lastName: string;
-    phone: string;
+    phone?: string | null;
+    campusId?: string | null;
+    courseId?: string | null;
   }
 
   interface Session {
-    user?: User;
+    user: User;
   }
 }
 
@@ -28,7 +28,9 @@ declare module "next-auth/jwt" {
     role: string;
     firstName: string;
     lastName: string;
-    phone: string;
+    phone?: string | null;
+    campusId?: string | null;
+    courseId?: string | null;
   }
 }
 
@@ -40,45 +42,13 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   pages: {
-    signIn: "/login",
+    signIn: "/login?auto-fill",
   },
   providers: [
-    // GitHubProvider({
-    //   clientId: process.env.GITHUB_CLIENT_ID || "",
-    //   clientSecret: process.env.GITHUB_SECRET || "",
-    //   profile(profile) {
-    //     return {
-    //       id: profile.id.toString(),
-    //       name: profile.name || profile.login,
-    //       firstName: profile.name?.split(" ")[0] || "",
-    //       lastName: profile.name?.split(" ")[1] || "",
-    //       phone: "",
-    //       image: profile.avatar_url,
-    //       email: profile.email,
-    //       role: "USER",
-    //     };
-    //   },
-    // }),
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID || "",
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    //   profile(profile) {
-    //     return {
-    //       id: profile.sub,
-    //       name: `${profile.given_name} ${profile.family_name}`,
-    //       firstName: profile.given_name,
-    //       lastName: profile.family_name,
-    //       phone: "",
-    //       image: profile.picture,
-    //       email: profile.email,
-    //       role: "USER",
-    //     };
-    //   },
-    // }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "jb@gmail.com" },
+        email: { label: "Email", type: "email", placeholder: "you@busilearn.ac.ug" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -98,11 +68,18 @@ export const authOptions: NextAuthOptions = {
             email: true,
             role: true,
             password: true,
+            campusId: true,
+            courseId: true,
+            status: true,
           },
         });
 
         if (!existingUser) {
           throw new Error("No user found");
+        }
+
+        if (!existingUser.status) {
+          throw new Error("Account is disabled");
         }
 
         const isPasswordValid = await compare(
@@ -123,6 +100,8 @@ export const authOptions: NextAuthOptions = {
           image: existingUser.image,
           email: existingUser.email,
           role: existingUser.role,
+          campusId: existingUser.campusId,
+          courseId: existingUser.courseId,
         };
       },
     }),
@@ -135,6 +114,8 @@ export const authOptions: NextAuthOptions = {
         token.firstName = user.firstName;
         token.lastName = user.lastName;
         token.phone = user.phone;
+        token.campusId = user.campusId;
+        token.courseId = user.courseId;
       }
       return token;
     },
@@ -145,6 +126,8 @@ export const authOptions: NextAuthOptions = {
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
         session.user.phone = token.phone;
+        session.user.campusId = token.campusId;
+        session.user.courseId = token.courseId;
       }
       return session;
     },

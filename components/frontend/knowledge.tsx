@@ -18,43 +18,43 @@ export default function Knowledge() {
 
   const categories: Category[] = [
     {
-      title: "Crop Production",
-      description: "Learn about various crop production techniques, from seeding to harvest.",
+      title: "General Science",
+      description: "Fundamental concepts in physics, chemistry, and biology for all levels.",
       articles: 156,
       subscribers: 2345,
       icon: Book,
     },
     {
-      title: "Livestock Management",
-      description: "Best practices for managing livestock, including health, feeding, and breeding.",
+      title: "Business & Finance",
+      description: "Explore accounting, management, and economic principles.",
       articles: 98,
       subscribers: 1876,
       icon: Book,
     },
     {
-      title: "Sustainable Farming",
-      description: "Explore sustainable and eco-friendly farming methods and technologies.",
+      title: "Information Technology",
+      description: "Learn about software development, networking, and digital systems.",
       articles: 134,
       subscribers: 3210,
       icon: Book,
     },
     {
-      title: "Agricultural Technology",
-      description: "Discover the latest in agritech, including IoT, drones, and AI in farming.",
+      title: "Humanities & Arts",
+      description: "Dive into literature, history, philosophy, and creative arts.",
       articles: 87,
       subscribers: 2654,
       icon: Book,
     },
     {
-      title: "Soil Management",
-      description: "Understanding soil health, composition, and improvement techniques.",
+      title: "Engineering",
+      description: "Principles and applications of civil, electrical, and mechanical engineering.",
       articles: 112,
       subscribers: 1987,
       icon: Book,
     },
     {
-      title: "Pest and Disease Control",
-      description: "Strategies for managing pests and diseases in crops and livestock.",
+      title: "Social Sciences",
+      description: "Understand society, psychology, and human behavior through research.",
       articles: 145,
       subscribers: 2789,
       icon: Book,
@@ -73,7 +73,7 @@ export default function Knowledge() {
             className="pl-10 pr-4 py-2 w-full"
           />
         </div>
-        <Button className="bg-green-600 hover:bg-green-700 text-white">
+        <Button className="bg-[#163360] hover:bg-[#0c1f3a] text-white">
           <Plus className="mr-2 h-4 w-4" /> Add New Topic
         </Button>
       </div>
@@ -83,7 +83,7 @@ export default function Knowledge() {
           <Card key={index}>
             <CardHeader>
               <CardTitle className="flex items-center text-slate-900">
-                <category.icon className="mr-2 h-5 w-5 text-green-600" />
+                <category.icon className="mr-2 h-5 w-5 text-[#163360]" />
                 {category.title}
               </CardTitle>
               <CardDescription>{category.description}</CardDescription>

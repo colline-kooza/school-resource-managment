@@ -1,4 +1,5 @@
 import CreateResourceForm from '@/components/backend/forms/CreateResourceForm'
+export const dynamic = "force-dynamic";
 import { authOptions } from '@/config/auth';
 import { getData } from '@/lib/getData';
 import { getServerSession } from 'next-auth';

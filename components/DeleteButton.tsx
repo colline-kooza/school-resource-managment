@@ -1,6 +1,5 @@
 "use client"
 import { Trash2 } from 'lucide-react'
-import { revalidatePath } from 'next/cache';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import toast from 'react-hot-toast';
@@ -23,7 +22,6 @@ export default function DeleteButton({id,redirect,resource,apiEndPoint}:{id:any,
         toast.success(`${resource} deleted successfully`);
         // router.push(`${redirect}`);
         location.reload()
-        // revalidatePath()
 
     }
    }

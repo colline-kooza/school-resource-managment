@@ -11,6 +11,7 @@ import {
   CreditCard,
   Frame,
   GalleryVerticalEnd,
+  Home,
   LogOut,
   Map,
   PieChart,
@@ -30,12 +31,14 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useSession, signOut } from "next-auth/react";
+import Link from 'next/link';
 
 
 const data = {
     user: {
-        name: "shadcn",
-        email: "m@example.com",
+        name: "User",
+        email: "user@busilearn.ac.ug",
         avatar: "/avatars/shadcn.jpg",
     },
     teams: [
@@ -173,6 +176,7 @@ import {
 
 
 export default function DashboardNav() {
+    const { data: session } = useSession();
     const [searchQuery, setSearchQuery] = React.useState("");
   return (
     <div className="flex h-16 items-center gap-4 border-b px-4">
@@ -199,10 +203,10 @@ export default function DashboardNav() {
                                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                 >
                                   <Avatar className="h-8 w-8 rounded-lg">
-                                    <AvatarImage
-                                      src={data.user.avatar}
-                                      alt={data.user.name}
-                                    />
+                                      <AvatarImage
+                                        src={session?.user?.image || data.user.avatar}
+                                        alt={session?.user?.name || data.user.name}
+                                      />
                                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                                   </Avatar>
                                   <div className="grid flex-1 text-left text-sm leading-tight">
@@ -224,21 +228,21 @@ export default function DashboardNav() {
                               >
                                 <DropdownMenuLabel className="p-0 font-normal">
                                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                    <Avatar className="h-8 w-8 rounded-lg">
-                                      <AvatarImage
-                                        src={data.user.avatar}
-                                        alt={data.user.name}
-                                      />
-                                      <AvatarFallback className="rounded-lg">
-                                        CN
-                                      </AvatarFallback>
-                                    </Avatar>
+                                     <Avatar className="h-8 w-8 rounded-lg">
+                                       <AvatarImage
+                                         src={session?.user?.image || data.user.avatar}
+                                         alt={session?.user?.name || data.user.name}
+                                       />
+                                       <AvatarFallback className="rounded-lg">
+                                         CN
+                                       </AvatarFallback>
+                                     </Avatar>
                                     <div className="grid flex-1 text-left text-sm leading-tight">
                                       <span className="truncate font-semibold">
-                                        {data.user.name}
+                                        {session?.user?.name || "User"}
                                       </span>
                                       <span className="truncate text-xs">
-                                        {data.user.email}
+                                        {session?.user?.email || "user@busilearn.ac.ug"}
                                       </span>
                                     </div>
                                   </div>
@@ -248,6 +252,12 @@ export default function DashboardNav() {
                                   <DropdownMenuItem>
                                     <Sparkles />
                                     Upgrade to Pro
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem asChild>
+                                    <Link href="/" className="cursor-pointer">
+                                      <Home className="mr-2 h-4 w-4" />
+                                      Home
+                                    </Link>
                                   </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
@@ -266,7 +276,7 @@ export default function DashboardNav() {
                                   </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })} className="cursor-pointer">
                                   <LogOut />
                                   Log out
                                 </DropdownMenuItem>

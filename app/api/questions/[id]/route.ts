@@ -1,305 +1,154 @@
-// import { db } from "@/prisma/db";
-// import { NextRequest, NextResponse } from "next/server";
-
-// // Type for the context parameter
-// interface RouteContext {
-//   params: {
-//     id: string;
-//   };
-// }
-
-// // GET - Fetch a single question
-// export async function GET(request: NextRequest, context: RouteContext) {
-//   try {
-//     const id = await context.params.id;
-
-//     const question = await db.question.findUnique({
-//       where: { id },
-//       include: {
-//         user: true,
-//         course: true,
-//       },
-//     });
-
-//     if (!question) {
-//       return NextResponse.json(
-//         { message: "Question not found" },
-//         { status: 404 }
-//       );
-//     }
-
-//     return NextResponse.json(question);
-//   } catch (error) {
-//     console.error("Error fetching question:", error);
-//     return NextResponse.json(
-//       {
-//         message: "Failed to fetch question",
-//         error: error instanceof Error ? error.message : "Unknown error occurred",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// // DELETE - Remove a question
-// export async function DELETE(request: NextRequest, context: RouteContext) {
-//   try {
-//     const id = await context.params.id;
-
-//     const deletedQuestion = await db.question.delete({
-//       where: { id },
-//     });
-
-//     return NextResponse.json({
-//       message: "Question deleted successfully",
-//       deletedQuestion,
-//     });
-//   } catch (error) {
-//     console.error("Failed to delete question:", error);
-//     return NextResponse.json(
-//       {
-//         message: "Failed to delete question",
-//         error: error instanceof Error ? error.message : "Unknown error occurred",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// // Type for update request body
-// interface UpdateQuestionData {
-//   title?: string;
-//   courseUnit?: string;
-//   content?: string;
-//   stars?: number;
-//   course?: string;
-//   courseId?: string;
-//   userId?: string;
-// }
-
-// // PATCH - Update a question
-// // export async function PATCH(request: NextRequest, context: RouteContext) {
-// //   try {
-// //     const id = await context.params.id;
-// //     const data: UpdateQuestionData = await request.json();
-
-// //     const updatedQuestion = await db.question.update({
-// //       where: { id },
-// //       data,
-// //     });
-
-// //     if (!updatedQuestion) {
-// //       return NextResponse.json(
-// //         { message: "Question not found" },
-// //         { status: 404 }
-// //       );
-// //     }
-
-// //     return NextResponse.json({
-// //       message: "Question updated successfully",
-// //       updatedQuestion,
-// //     });
-// //   } catch (error) {
-// //     console.error("Failed to update question:", error);
-// //     return NextResponse.json(
-// //       {
-// //         message: "Failed to update question",
-// //         error: error instanceof Error ? error.message : "Unknown error occurred",
-// //       },
-// //       { status: 500 }
-// //     );
-// //   }
-// // }
-
-
-// app/api/questions/[id]/route.ts
-// import { db } from "@/prisma/db";
-// import { NextRequest, NextResponse } from "next/server";
-
-// interface RouteContext {
-//   params: Promise<{ id: string }> | { id: string };
-// }
-
-// // GET - Fetch a single question
-// export async function GET(request: NextRequest, context: RouteContext) {
-//   try {
-//     const resolvedParams = await context.params;
-//     const id = resolvedParams.id;
-
-//     const question = await db.question.findUnique({
-//       where: { id },
-//       include: {
-//         user: true,
-//         course: true,
-//       },
-//     });
-
-//     if (!question) {
-//       return NextResponse.json(
-//         { message: "Question not found" },
-//         { status: 404 }
-//       );
-//     }
-
-//     return NextResponse.json(question);
-//   } catch (error) {
-//     console.error("Error fetching question:", error);
-//     return NextResponse.json(
-//       {
-//         message: "Failed to fetch question",
-//         error: error instanceof Error ? error.message : "Unknown error occurred",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// // DELETE - Remove a question
-// export async function DELETE(request: NextRequest, context: RouteContext) {
-//   try {
-//     const resolvedParams = await context.params;
-//     const id = resolvedParams.id;
-
-//     const deletedQuestion = await db.question.delete({
-//       where: { id },
-//     });
-
-//     return NextResponse.json({
-//       message: "Question deleted successfully",
-//       deletedQuestion,
-//     });
-//   } catch (error) {
-//     console.error("Failed to delete question:", error);
-//     return NextResponse.json(
-//       {
-//         message: "Failed to delete question",
-//         error: error instanceof Error ? error.message : "Unknown error occurred",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-// // Type for update request body
-// interface UpdateQuestionData {
-//   title?: string;
-//   courseUnit?: string;
-//   content?: string;
-//   stars?: number;
-//   course?: string;
-//   courseId?: string;
-//   userId?: string;
-// }
-
-// // PATCH - Update a question
-// // export async function PATCH(request: NextRequest, context: RouteContext) {
-// //   try {
-// //     const resolvedParams = await context.params;
-// //     const id = resolvedParams.id;
-// //     const data: UpdateQuestionData = await request.json();
-
-// //     const updatedQuestion = await db.question.update({
-// //       where: { id },
-// //       data,
-// //     });
-
-// //     if (!updatedQuestion) {
-// //       return NextResponse.json(
-// //         { message: "Question not found" },
-// //         { status: 404 }
-// //       );
-// //     }
-
-// //     return NextResponse.json({
-// //       message: "Question updated successfully",
-// //       updatedQuestion,
-// //     });
-// //   } catch (error) {
-// //     console.error("Failed to update question:", error);
-// //     return NextResponse.json(
-// //       {
-// //         message: "Failed to update question",
-// //         error: error instanceof Error ? error.message : "Unknown error occurred",
-// //       },
-// //       { status: 500 }
-// //     );
-// //   }
-// // }
-
-
-
+import { NextResponse } from "next/server";
 import { db } from "@/prisma/db";
-import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/auth";
 
-interface RouteContext {
-  params: { id: string }; // Correct type for `params`
-}
-
-// GET - Fetch a single question
-export async function GET( request: NextRequest,{params}: {params: Promise<{ id: string }>}) {
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } =await params; // Access `id` directly
+    const { id } = await params;
+
+    // Increment views asynchronously
+    db.question.update({
+      where: { id },
+      data: { views: { increment: 1 } }
+    }).catch((err: any) => console.error("Failed to increment views:", err));
 
     const question = await db.question.findUnique({
       where: { id },
       include: {
-        user: true,
-        course: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            firstName: true,
+            lastName: true,
+            image: true,
+            role: true,
+          },
+        },
+        course: { select: { title: true } },
+        courseUnit: { select: { title: true } },
+        answers: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                firstName: true,
+                lastName: true,
+                image: true,
+                role: true,
+              },
+            },
+          },
+          orderBy: [
+            { isAccepted: "desc" },
+            { upVotes: "desc" },
+          ],
+        },
+        _count: {
+          select: { answers: true }
+        }
       },
     });
 
     if (!question) {
-      return NextResponse.json(
-        { message: "Question not found" },
-        { status: 404 }
-      );
+      return new NextResponse("Not Found", { status: 404 });
     }
 
     return NextResponse.json(question);
   } catch (error) {
-    console.error("Error fetching question:", error);
-    return NextResponse.json(
-      {
-        message: "Failed to fetch question",
-        error: error instanceof Error ? error.message : "Unknown error occurred",
-      },
-      { status: 500 }
-    );
+    console.error("[QUESTION_GET]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
-// DELETE - Remove a question
-// export async function DELETE(request: NextRequest, context: RouteContext) {
-//   try {
-//     const { id } = context.params; // Access `id` directly
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
-//     const deletedQuestion = await db.question.delete({
-//       where: { id },
-//     });
+    const { id } = await params;
+    const body = await req.json();
+    const { title, content, tags, isResolved } = body;
 
-//     return NextResponse.json({
-//       message: "Question deleted successfully",
-//       deletedQuestion,
-//     });
-//   } catch (error) {
-//     console.error("Failed to delete question:", error);
-//     return NextResponse.json(
-//       {
-//         message: "Failed to delete question",
-//         error: error instanceof Error ? error.message : "Unknown error occurred",
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
+    const existingQuestion = await db.question.findUnique({
+      where: { id },
+    });
 
-// // Type for update request body
-// interface UpdateQuestionData {
-//   title?: string;
-//   courseUnit?: string;
-//   content?: string;
-//   stars?: number;
-//   course?: string;
-//   courseId?: string;
-//   userId?: string;
-// }
+    if (!existingQuestion) {
+      return new NextResponse("Not Found", { status: 404 });
+    }
+
+    // Authorization: Owner or Admin
+    const isOwner = existingQuestion.userId === session.user.id;
+    const isAdmin = session.user.role === "ADMIN";
+    const isLecturer = session.user.role === "LECTURER";
+
+    if (!isOwner && !isAdmin && !isLecturer) {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+
+    const question = await db.question.update({
+      where: { id },
+      data: {
+        title,
+        content,
+        tags,
+        isResolved,
+      },
+    });
+
+    return NextResponse.json(question);
+  } catch (error) {
+    console.error("[QUESTION_PATCH]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const { id } = await params;
+
+    const existingQuestion = await db.question.findUnique({
+      where: { id },
+    });
+
+    if (!existingQuestion) {
+      return new NextResponse("Not Found", { status: 404 });
+    }
+
+    // Role check: Only Owner, Lecturer, or Admin can delete
+    const isOwner = existingQuestion.userId === session.user.id;
+    const isModerator = session.user.role === "ADMIN" || session.user.role === "LECTURER";
+
+    if (!isOwner && !isModerator) {
+      return new NextResponse("Forbidden", { status: 403 });
+    }
+
+    await db.question.delete({
+      where: { id },
+    });
+
+    return new NextResponse(null, { status: 204 });
+  } catch (error) {
+    console.error("[QUESTION_DELETE]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

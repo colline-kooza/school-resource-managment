@@ -8,7 +8,7 @@ export default function LogoutBtn() {
   async function handleLogout() {
     try {
       await signOut();
-      router.push("/login");
+      router.push("/login?auto-fill");
     } catch (error) {
       console.log(error);
     }

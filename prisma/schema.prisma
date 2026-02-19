@@ -1,156 +1,404 @@
- 
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
- 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
- 
 generator client {
   provider = "prisma-client-js"
 }
- 
+
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
- 
+
+// ─── ENUMS ───────────────────────────────────────────────
+
+enum UserRole {
+  STUDENT
+  LECTURER
+  ADMIN
+}
+
+enum ResourceType {
+  PAST_PAPER
+  NOTES
+  VIDEO
+  ASSIGNMENT
+  OTHER
+}
+
+enum ResourceStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum QuizDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum NotificationStatus {
+  UNREAD
+  READ
+}
+
+// ─── AUTH ────────────────────────────────────────────────
+
 model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId
+  id                String  @id @default(uuid())
+  userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.String
-  access_token      String? @db.String
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.String
+  id_token          String?
   session_state     String?
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@unique([provider, providerAccountId])
 }
- 
+
 model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(uuid())
   sessionToken String   @unique
-  userId       String   @db.ObjectId
+  userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
- 
-enum UserRole {
-  USER
-  ADMIN
-  CAMPUS_ADMIN
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
 }
- 
+
+// ─── USER ────────────────────────────────────────────────
+
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String      @id @default(uuid())
   name          String
   firstName     String
   lastName      String
-  phone         String
-  email         String   @unique
+  phone         String?
+  email         String      @unique
   emailVerified DateTime?
   image         String?
-  role          UserRole  @default(USER)
+  role          UserRole    @default(STUDENT)
   password      String?
-  status Boolean @default(true)
+  status        Boolean     @default(true)
+  isVerified    Boolean     @default(false)
+  studentId     String?
+  yearOfStudy   Int?
+
+  campus        Campus?     @relation(fields: [campusId], references: [id])
+  campusId      String?
+  course        Course?     @relation(fields: [courseId], references: [id])
+  courseId      String?
+  department    Department? @relation(fields: [departmentId], references: [id])
+  departmentId  String?
+
   accounts      Account[]
   sessions      Session[]
   resources     Resource[]
   questions     Question[]
   answers       Answer[]
-  isVerfied     Boolean   @default(true)
-  campus        Campus? @relation(fields: [campusId], references: [id])
-  campusId      String?    @db.ObjectId
-  course        Course? @relation(fields: [courseId], references: [id])
-  courseId      String?    @db.ObjectId
-  token         Int?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
- 
+  quizAttempts  QuizAttempt[]
+  notifications Notification[]
+  bookmarks     Bookmark[]
+  announcements Announcement[]
+  questionVotes QuestionVote[]
+  answerVotes   AnswerVote[]
+  createdQuizzes Quiz[]       @relation("QuizCreator")
 
-model Course {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  slug      String    @unique
-  imageUrl  String?
-  description String?
-  resources Resource[]
-  users     User[]
-  questions Question[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
+
+// ─── CAMPUS / DEPARTMENT / COURSE / UNIT ─────────────────
 
 model Campus {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  slug      String    @unique
-  imageUrl  String
-  users     User[]
-  resources Resource[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id            String        @id @default(uuid())
+  title         String
+  slug          String        @unique
+  imageUrl      String?
+  location      String?
+  description   String?
+
+  users         User[]
+  departments   Department[]
+  courses       Course[]
+  resources     Resource[]
+  announcements Announcement[]
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime?     @updatedAt
 }
+
+model Department {
+  id          String     @id @default(uuid())
+  title       String
+  slug        String     @unique
+  description String?
+
+  campus      Campus     @relation(fields: [campusId], references: [id])
+  campusId    String
+
+  users       User[]
+  courses     Course[]
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+}
+
+model Course {
+  id           String      @id @default(uuid())
+  title        String
+  code         String      @unique
+  slug         String      @unique
+  imageUrl     String?
+  description  String?
+  yearOfStudy  Int?
+
+  campus       Campus?     @relation(fields: [campusId], references: [id])
+  campusId     String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
+
+  users        User[]
+  resources    Resource[]
+  questions    Question[]
+  units        CourseUnit[]
+  quizzes      Quiz[]
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime?   @updatedAt
+}
+
+model CourseUnit {
+  id          String     @id @default(uuid())
+  title       String
+  code        String?
+  description String?
+
+  course      Course     @relation(fields: [courseId], references: [id])
+  courseId    String
+
+  resources   Resource[]
+  questions   Question[]
+  quizzes     Quiz[]
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+}
+
+// ─── CATEGORY ────────────────────────────────────────────
 
 model Category {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(uuid())
   title     String
-  slug      String    @unique
+  slug      String     @unique
+  iconUrl   String?
   resources Resource[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?  @updatedAt
 }
 
+// ─── RESOURCE ────────────────────────────────────────────
+
 model Resource {
-  
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  title      String
-  slug       String    @unique
-  courseUnit String
-  pdfUrl      String
-  description String
-  category   Category  @relation(fields: [categoryId], references: [id])
-  categoryId String    @db.ObjectId
-  course     Course    @relation(fields: [courseId], references: [id])
-  courseId   String    @db.ObjectId
-  campus     Campus    @relation(fields: [campusId], references: [id])
-  campusId   String    @db.ObjectId
-  user       User?      @relation(fields: [userId], references: [id])
-  userId     String    @db.ObjectId
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @updatedAt
+  id            String         @id @default(uuid())
+  title         String
+  slug          String         @unique
+  description   String?
+  type          ResourceType   @default(OTHER)
+  fileUrl       String
+  thumbnailUrl  String?
+  year          Int?
+  semester      String?
+  views         Int            @default(0)
+  downloads     Int            @default(0)
+  status        ResourceStatus @default(PENDING)
+  rejectionNote String?
+
+  category      Category       @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  course        Course         @relation(fields: [courseId], references: [id])
+  courseId      String
+  courseUnit    CourseUnit?    @relation(fields: [courseUnitId], references: [id])
+  courseUnitId  String?
+  campus        Campus         @relation(fields: [campusId], references: [id])
+  campusId      String
+  uploadedBy    User?          @relation(fields: [userId], references: [id])
+  userId        String?
+
+  bookmarks     Bookmark[]
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime?      @updatedAt
 }
+
+// ─── Q&A ─────────────────────────────────────────────────
+
 model Question {
-  
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  title      String
-  courseUnit String
+  id           String      @id @default(uuid())
+  title        String
+  content      String
+  tags         String[]
+  views        Int         @default(0)
+  upVotes      Int         @default(0)
+  downVotes    Int         @default(0)
+  isResolved   Boolean     @default(false)
+
+  course       Course?     @relation(fields: [courseId], references: [id])
+  courseId     String?
+  courseUnit   CourseUnit? @relation(fields: [courseUnitId], references: [id])
+  courseUnitId String?
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+
+  answers      Answer[]
+  votes        QuestionVote[]
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime?   @updatedAt
+}
+
+model Answer {
+  id         String    @id @default(uuid())
   content    String
-  stars      Float @default(0)
-  course     Course    @relation(fields: [courseId], references: [id])
-  courseId   String    @db.ObjectId
+  upVotes    Int       @default(0)
+  downVotes  Int       @default(0)
+  isAccepted Boolean   @default(false)
+
+  question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
   user       User      @relation(fields: [userId], references: [id])
-  userId     String    @db.ObjectId
-  answers   Answer[]
+  userId     String
+  
+  votes      AnswerVote[]
+
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @updatedAt
 }
-model Answer {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  content    String
-  question   Question    @relation(fields: [questionId], references: [id])
-  questionId   String    @db.ObjectId
-  user       User      @relation(fields: [userId], references: [id])
-  userId     String    @db.ObjectId
-  upVotes    Float @default(0)
-  downVotes  Float @default(0)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @updatedAt
+
+model QuestionVote {
+  id         String   @id @default(uuid())
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  direction  String   // "UP" or "DOWN"
+
+  createdAt  DateTime @default(now())
+  @@unique([questionId, userId])
+}
+
+model AnswerVote {
+  id        String   @id @default(uuid())
+  answer    Answer   @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  answerId  String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  direction String   // "UP" or "DOWN"
+
+  createdAt DateTime @default(now())
+  @@unique([answerId, userId])
+}
+
+// ─── QUIZ ─────────────────────────────────────────────────
+
+model Quiz {
+  id           String         @id @default(uuid())
+  title        String
+  description  String?
+  difficulty   QuizDifficulty @default(MEDIUM)
+  timeLimit    Int?           // In minutes
+  passMark     Float          @default(50)
+  isPublished  Boolean        @default(false)
+
+  course       Course?        @relation(fields: [courseId], references: [id])
+  courseId     String?
+  courseUnit   CourseUnit?    @relation(fields: [courseUnitId], references: [id])
+  courseUnitId String?
+  creator      User?          @relation("QuizCreator", fields: [createdById], references: [id])
+  createdById  String?
+
+  questions    QuizQuestion[]
+  attempts     QuizAttempt[]
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+}
+
+model QuizQuestion {
+  id            String   @id @default(uuid())
+  questionText  String
+  options       String[]
+  correctAnswer String
+  explanation   String?
+  points        Int      @default(1)
+
+  quiz          Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId        String
+
+  createdAt     DateTime @default(now())
+}
+
+model QuizAttempt {
+  id        String   @id @default(uuid())
+  score     Float
+  passed    Boolean
+  answers   Json
+  timeTaken Int?
+
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  quizId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  createdAt DateTime @default(now())
+}
+
+// ─── ENGAGEMENT ───────────────────────────────────────────
+
+model Bookmark {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  resourceId String
+
+  createdAt  DateTime @default(now())
+  @@unique([userId, resourceId])
+}
+
+model Notification {
+  id        String             @id @default(uuid())
+  title     String
+  message   String
+  status    NotificationStatus @default(UNREAD)
+  link      String?
+
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  createdAt DateTime           @default(now())
+}
+
+model Announcement {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  isPublic    Boolean   @default(true)
+
+  campus      Campus?   @relation(fields: [campusId], references: [id])
+  campusId    String?
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  createdById String
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 }

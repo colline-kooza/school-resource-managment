@@ -14,16 +14,16 @@ const FAQItem = ({ question, answer }: FAQItemProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <Card className="mb-4">
+    <Card className="mb-4 border-slate-100 shadow-sm overflow-hidden">
       <CardContent className="p-0">
         <button
-          className="flex justify-between items-center w-full p-4 text-left focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="flex justify-between items-center w-full p-5 text-left focus:outline-none transition-colors hover:bg-slate-50"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
         >
-          <span className="font-semibold text-slate-900">{question}</span>
+          <span className="font-bold text-[#163360]">{question}</span>
           <ChevronDown
-            className={`w-5 h-5 text-green-600 transition-transform duration-200 ${
+            className={`w-5 h-5 text-[#F4A800] transition-transform duration-300 ${
               isOpen ? "transform rotate-180" : ""
             }`}
           />
@@ -36,7 +36,7 @@ const FAQItem = ({ question, answer }: FAQItemProps) => {
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <p className="p-4 text-slate-600 border-t border-slate-200">{answer}</p>
+              <p className="px-5 pb-5 text-slate-600 border-t border-slate-50 pt-4 leading-relaxed">{answer}</p>
             </motion.div>
           )}
         </AnimatePresence>
@@ -48,38 +48,43 @@ const FAQItem = ({ question, answer }: FAQItemProps) => {
 export default function FAQSection() {
   const faqs = [
     {
-      question: "How do I create an account on the platform?",
+      question: "How do I access past papers and lecture notes?",
       answer:
-        "To create an account, click on the 'Sign Up' button in the top right corner of the homepage. Fill in your details, including your name, email address, and a secure password. Once submitted, you'll receive a confirmation email to activate your account.",
+        "Once you're logged in, navigate to the 'Resources' section. You can use the search bar to filter by course unit name or code. All materials are categorized by year and semester for easy access.",
     },
     {
-      question: "Can I ask questions anonymously in the Forum?",
+      question: "Who can upload resources to BusiLearn?",
       answer:
-        "While we encourage open communication, we understand that some topics might be sensitive. You can choose to post questions anonymously in the Forum. However, you'll need to be logged in to use this feature, and moderators will still be able to see your account details if needed for community management purposes.",
+        "Currently, only Lecturers and Admins can upload verified resources like lecture notes. However, students can contribute through the Q&A Forum and share study tips. Student uploads will be available in the next update.",
     },
     {
-      question: "How can I contribute to the Knowledge Base?",
+      question: "Is the platform free to use for all ADE students?",
       answer:
-        "We welcome contributions from our community! To add to the Knowledge Base, navigate to the Knowledge Base section and click on 'Contribute'. You can submit articles, guides, or resources. All submissions are reviewed by our team before being published to ensure accuracy and relevance.",
+        "Yes, BusiLearn is a free resource developed for the students. You only need your university email or student details to register.",
     },
     {
-      question: "Is there a mobile app for the platform?",
+      question: "Can I take quizzes on my mobile phone?",
       answer:
-        "Yes, we have mobile apps available for both iOS and Android devices. You can download them from the App Store or Google Play Store. The mobile apps offer most of the features available on the web platform, allowing you to stay connected on the go.",
+        "Absolutely! BusiLearn is fully responsive and works perfectly on smartphones. While we don't have a native app yet, the web experience is optimized for mobile study sessions.",
     },
     {
-      question: "How do I report inappropriate content or behavior?",
+      question: "How do I report an error in a resource?",
       answer:
-        "We take community safety seriously. If you come across any content or behavior that violates our community guidelines, please use the 'Report' button available on all posts and user profiles. Our moderation team will review the report and take appropriate action as quickly as possible.",
+        "If you find an error in a quiz or lecture note, please use the 'Report' flag within that specific resource, or start a discussion in the 'Community' section. Our moderators will review it promptly.",
     },
   ]
 
   return (
-    <section className="w-full py-12 bg-slate-50">
+    <section className="w-full py-20 bg-white">
       <div className="container px-4 md:px-6">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-8 text-slate-900">
-          Frequently Asked Questions
-        </h2>
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-extrabold tracking-tighter sm:text-3xl text-[#163360] mb-4">
+            Got Questions?
+          </h2>
+          <p className="text-base text-slate-500 max-w-2xl mx-auto">
+            Everything you need to know about navigating the BusiLearn platform.
+          </p>
+        </div>
         <div className="max-w-3xl mx-auto">
           {faqs.map((faq, index) => (
             <FAQItem key={index} question={faq.question} answer={faq.answer} />
@@ -89,4 +94,5 @@ export default function FAQSection() {
     </section>
   )
 }
+
 

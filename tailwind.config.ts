@@ -58,6 +58,10 @@ export default withUt({
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
   			},
+  			brand: {
+  				DEFAULT: '#163360',
+  				foreground: '#FFFFFF'
+  			},
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
@@ -111,7 +115,10 @@ export default withUt({
   			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
   			marquee: 'marquee var(--duration) linear infinite',
   			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
-  		}
+  		},
+  		fontFamily: {
+  			sans: ['var(--font-inter)', ...defaultTheme.fontFamily.sans],
+  		},
   	}
   },
   plugins: [

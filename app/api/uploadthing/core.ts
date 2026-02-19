@@ -12,10 +12,13 @@ export const ourFileRouter = {
       return { uploadedBy: "admin"};
     }
   ),
-  documentUploader: f({ blob: { maxFileSize: "4MB" } }).onUploadComplete(
+  resourceUploader: f({ 
+    pdf: { maxFileSize: "32MB" },
+    blob: { maxFileSize: "32MB" } 
+  }).onUploadComplete(
     async ({ metadata, file }) => {
-      console.log("file url", file.url);
-      return { uploadedBy: "admin"};
+      console.log("resource uploaded:", file.url);
+      return { url: file.url };
     }
   ),
 } satisfies FileRouter;

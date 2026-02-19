@@ -31,6 +31,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useSession, signOut } from "next-auth/react"
 import {
     AudioWaveform,
     BadgeCheck,
@@ -45,6 +46,7 @@ import {
     Forward,
     Frame,
     GalleryVerticalEnd,
+    Home,
     LogOut,
     Map,
     MoreHorizontal,
@@ -59,8 +61,8 @@ import Logo from '@/components/frontend/Logo'
 
 const data = {
     user: {
-        name: "shadcn",
-        email: "m@example.com",
+        name: "User",
+        email: "user@busilearn.ac.ug",
         avatar: "/avatars/shadcn.jpg",
     },
     teams: [
@@ -187,6 +189,12 @@ const data = {
 }
 
 export default function AppSidebarHeader() {
+    const { data: session } = useSession()
+    const user = {
+        name: session?.user?.name || "User",
+        email: session?.user?.email || "user@busilearn.ac.ug",
+        avatar: session?.user?.image || "/avatars/shadcn.jpg",
+    }
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader>
@@ -347,6 +355,12 @@ export default function AppSidebarHeader() {
                                         <Sparkles className="mr-2" />
                                         Upgrade to Pro
                                     </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/" className="cursor-pointer">
+                                            <Home className="mr-2 h-4 w-4" />
+                                            Home
+                                        </Link>
+                                    </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuGroup>
@@ -364,7 +378,7 @@ export default function AppSidebarHeader() {
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })} className="cursor-pointer">
                                     <LogOut className="mr-2" />
                                     Log out
                                 </DropdownMenuItem>

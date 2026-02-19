@@ -1,62 +1,51 @@
-import { db } from '@/prisma/db';
-import { NextResponse } from 'next/server'
-import React from 'react'
+import { db } from "@/prisma/db";
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/config/auth";
 
-// creating a new record
-export async function POST(request:any) {
+export async function POST(req: Request) {
     try {
-        const {title,slug,imageUrl}=await request.json();
-
-        const existingCategory=await db.category.findUnique({
-            where:{
-                slug,
-            }
-        });
-        if(existingCategory){
-            return NextResponse.json({
-                data:null,
-                message:"Campus already exists"
-            },{status:409})
+        const session = await getServerSession(authOptions);
+        if (!session || session.user.role !== "ADMIN") {
+            return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        // use prisma to create the category
-        const newCampus=await db.campus.create({
-            data:{title,slug,imageUrl}
+        const { title, slug, location, description, imageUrl } = await req.json();
 
-        })
-        console.log(newCampus);
-        return NextResponse.json(newCampus,{status:201})
-
-    } catch (error:any) {
-        console.log("error while creating campus",error)
-        return NextResponse.json({
-            message:"Failed to create campus",
-            error:error.message
-        },{status:500})
-        
-    }
-
-}
-
-// getting a record
-export async function GET(request:any){
-    try {
-        const campuses=await db.campus.findMany({
-            orderBy:{
-                createdAt:"desc"
-            }
+        const existing = await db.campus.findUnique({
+            where: { slug }
         });
-        return NextResponse.json(campuses);
-    } catch (error:any) {
-        console.log("error while fetching campuses",error)
-        return NextResponse.json({
-            message:"Failed to fetch campuses",
-            error:error.message
-        },{status:500})
-        
+
+        if (existing) {
+            return new NextResponse("Campus with this slug already exists", { status: 409 });
+        }
+
+        const campus = await db.campus.create({
+            data: { title, slug, location, description, imageUrl }
+        });
+
+        return NextResponse.json(campus);
+
+    } catch (error) {
+        console.error("[CAMPUSES_POST]", error);
+        return new NextResponse("Internal Error", { status: 500 });
     }
 }
 
+export async function GET() {
+    try {
+        const campuses = await db.campus.findMany({
+            include: {
+                _count: {
+                    select: { departments: true, users: true }
+                }
+            },
+            orderBy: { createdAt: "desc" }
+        });
 
-
-
+        return NextResponse.json(campuses);
+    } catch (error) {
+        console.error("[CAMPUSES_GET]", error);
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}

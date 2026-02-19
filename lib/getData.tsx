@@ -9,5 +9,6 @@ export async function getData(endpoint:any) {
       return data;
     } catch (error) {
       console.log(error);
+      return [];
     }
   }

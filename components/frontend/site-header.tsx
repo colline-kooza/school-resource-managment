@@ -34,21 +34,20 @@ export default function SiteHeader({ session }: { session: Session | null }) {
   async function handleLogout() {
     try {
       await signOut();
-      router.push("/login");
+      router.push("/login?auto-fill");
     } catch (error) {
       console.log(error);
     }
   }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <header className="sticky bg-white inset-x-0 top-0 lg:top-0 shadow shadow-slate-500 text-green-900 z-50">
+    <header className="sticky bg-white inset-x-0 top-0 lg:top-0 shadow shadow-slate-500 text-[#163360] z-50">
       <nav
         aria-label="Global"
         className="flex items-center justify-between p-3 lg:px-8"
       >
         <div className="flex lg:flex-1">
-          <h2 className="text-green-900 font-semibold">Agriculture Dev Ecosystem</h2>
-          {/* <Logo title="Kampus Access Ug" href="/" /> */}
+          <Logo href="/" />
         </div>
         <div className="flex lg:hidden">
           <button
@@ -65,7 +64,7 @@ export default function SiteHeader({ session }: { session: Session | null }) {
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-green-900"
+              className="text-sm font-semibold leading-6 text-[#163360]"
             >
               {item.name}
             </Link>
@@ -76,7 +75,7 @@ export default function SiteHeader({ session }: { session: Session | null }) {
             <AuthenticatedAvatar session={session} />
           ) : (
             <Button asChild variant={"outline"}>
-              <Link href="/login">Log in</Link>
+              <Link href="/login?auto-fill">Log in</Link>
             </Button>
           )}
         </div>
@@ -89,7 +88,7 @@ export default function SiteHeader({ session }: { session: Session | null }) {
         <div className="fixed inset-0 z-50" />
         <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <Logo href="/" labelShown={true} title="Next Starter Pro" />
+            <Logo href="/" labelShown={true} />
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
@@ -130,7 +129,7 @@ export default function SiteHeader({ session }: { session: Session | null }) {
                   </Button>
                 ) : (
                   <Button asChild variant={"outline"}>
-                    <Link href="/login">Log in</Link>
+                    <Link href="/login?auto-fill">Log in</Link>
                   </Button>
                 )}
               </div>

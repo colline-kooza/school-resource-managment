@@ -1,0 +1,135 @@
+
+> kampus@0.1.0 build G:\PROJECTS\ade-school-project
+> next build
+
+   ▲ Next.js 15.1.3
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+./components/frontend/Logo.tsx
+16:7  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/58) ...
+   Generating static pages (14/58) 
+   Generating static pages (28/58) 
+   Generating static pages (43/58) 
+ ✓ Generating static pages (58/58)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                     Size     First Load JS
+┌ ƒ /                                           48.1 kB         171 kB
+├ ○ /_not-found                                 271 B           106 kB
+├ ƒ /admin                                      10.5 kB         296 kB
+├ ƒ /admin/analytics                            9.51 kB         283 kB
+├ ƒ /admin/announcements                        185 B           203 kB
+├ ƒ /admin/campuses                             182 B           203 kB
+├ ƒ /admin/categories                           184 B           203 kB
+├ ƒ /admin/course-units                         185 B           203 kB
+├ ƒ /admin/courses                              185 B           203 kB
+├ ƒ /admin/departments                          185 B           203 kB
+├ ƒ /admin/resources/pending                    8.08 kB         194 kB
+├ ƒ /admin/users                                8.63 kB         212 kB
+├ ƒ /announcements                              7.45 kB         190 kB
+├ ƒ /api/analytics/overview                     271 B           106 kB
+├ ƒ /api/announcements                          271 B           106 kB
+├ ƒ /api/announcements/[id]                     271 B           106 kB
+├ ƒ /api/announcements/recent                   271 B           106 kB
+├ ƒ /api/answers                                271 B           106 kB
+├ ƒ /api/answers/[id]                           271 B           106 kB
+├ ƒ /api/answers/[id]/accept                    271 B           106 kB
+├ ƒ /api/answers/[id]/vote                      271 B           106 kB
+├ ƒ /api/auth/[...nextauth]                     271 B           106 kB
+├ ƒ /api/auth/register                          271 B           106 kB
+├ ƒ /api/bookmarks                              271 B           106 kB
+├ ƒ /api/bookmarks/[resourceId]                 271 B           106 kB
+├ ƒ /api/campuses                               271 B           106 kB
+├ ƒ /api/campuses/[id]                          271 B           106 kB
+├ ƒ /api/categories                             271 B           106 kB
+├ ƒ /api/categories/[id]                        271 B           106 kB
+├ ƒ /api/course-units                           271 B           106 kB
+├ ƒ /api/course-units/[id]                      271 B           106 kB
+├ ƒ /api/courses                                271 B           106 kB
+├ ƒ /api/courses/[id]                           271 B           106 kB
+├ ƒ /api/dashboard/admin                        271 B           106 kB
+├ ƒ /api/dashboard/lecturer                     271 B           106 kB
+├ ƒ /api/dashboard/student                      271 B           106 kB
+├ ƒ /api/departments                            271 B           106 kB
+├ ƒ /api/departments/[id]                       271 B           106 kB
+├ ƒ /api/notifications                          271 B           106 kB
+├ ƒ /api/notifications/[id]/read                271 B           106 kB
+├ ƒ /api/notifications/unread-count             271 B           106 kB
+├ ƒ /api/questions                              271 B           106 kB
+├ ƒ /api/questions/[id]                         271 B           106 kB
+├ ƒ /api/questions/[id]/answers                 271 B           106 kB
+├ ƒ /api/questions/[id]/vote                    271 B           106 kB
+├ ƒ /api/quizzes                                271 B           106 kB
+├ ƒ /api/quizzes/[id]                           271 B           106 kB
+├ ƒ /api/quizzes/[id]/attempt                   271 B           106 kB
+├ ƒ /api/quizzes/[id]/attempt/[attemptId]       271 B           106 kB
+├ ƒ /api/quizzes/[id]/publish                   271 B           106 kB
+├ ƒ /api/quizzes/[id]/results                   271 B           106 kB
+├ ƒ /api/resources                              271 B           106 kB
+├ ƒ /api/resources/[id]                         271 B           106 kB
+├ ƒ /api/resources/[id]/approve                 271 B           106 kB
+├ ƒ /api/resources/[id]/download                271 B           106 kB
+├ ƒ /api/resources/[id]/reject                  271 B           106 kB
+├ ƒ /api/resources/recent                       271 B           106 kB
+├ ƒ /api/revalidate                             271 B           106 kB
+├ ƒ /api/uploadthing                            271 B           106 kB
+├ ƒ /api/users                                  271 B           106 kB
+├ ƒ /api/users/[id]                             271 B           106 kB
+├ ƒ /api/users/[id]/password                    271 B           106 kB
+├ ƒ /api/users/[id]/role                        271 B           106 kB
+├ ƒ /api/users/[id]/status                      271 B           106 kB
+├ ƒ /askquestion                                173 B           235 kB
+├ ƒ /community                                  3.38 kB         117 kB
+├ ƒ /dashboard                                  3.72 kB         181 kB
+├ ƒ /dashboard/bookmarks                        3.44 kB         176 kB
+├ ƒ /dashboard/campuses                         1.04 kB         359 kB
+├ ○ /dashboard/campuses/new                     6.29 kB         181 kB
+├ ƒ /dashboard/categories                       860 B           353 kB
+├ ○ /dashboard/categories/new                   4.42 kB         154 kB
+├ ƒ /dashboard/courses                          858 B           353 kB
+├ ○ /dashboard/courses/new                      160 B           154 kB
+├ ƒ /dashboard/qa                               6.62 kB         183 kB
+├ ƒ /dashboard/qa/[id]                          6.94 kB         201 kB
+├ ƒ /dashboard/qa/ask                           3.92 kB         217 kB
+├ ○ /dashboard/quizzes                          3.7 kB          142 kB
+├ ƒ /dashboard/quizzes/[id]                     5.25 kB         151 kB
+├ ƒ /dashboard/quizzes/[id]/result/[attemptId]  3.49 kB         146 kB
+├ ƒ /dashboard/quizzes/[id]/take                6.33 kB         158 kB
+├ ƒ /dashboard/resources                        6.64 kB         175 kB
+├ ƒ /dashboard/resources/[id]                   5.06 kB         174 kB
+├ ƒ /dashboard/resources/new                    174 B           235 kB
+├ ƒ /dashboard/users                            908 B           353 kB
+├ ○ /dashboard/users/new                        160 B           154 kB
+├ ƒ /knowledge                                  2.4 kB          116 kB
+├ ○ /lecturer/quizzes                           7.11 kB         180 kB
+├ ƒ /lecturer/quizzes/[id]/attempts             5.62 kB         154 kB
+├ ○ /lecturer/quizzes/create                    6.33 kB         215 kB
+├ ○ /login                                      3.35 kB         181 kB
+├ ƒ /notifications                              5 kB            152 kB
+├ ƒ /profile                                    13.4 kB         182 kB
+├ ƒ /qa                                         6.4 kB          165 kB
+├ ƒ /qa/[id]                                    34 kB           198 kB
+├ ○ /register                                   4.61 kB         173 kB
+├ ƒ /resources                                  4.01 kB         150 kB
+├ ○ /unauthorized                               1.61 kB         119 kB
+└ ƒ /upload                                     175 B           235 kB
++ First Load JS shared by all                   106 kB
+  ├ chunks/3105-949975afb4b09420.js             50.7 kB
+  ├ chunks/88a88164-c2ceecf1d6211948.js         53 kB
+  └ other shared chunks (total)                 2 kB
+
+
+ƒ Middleware                                    57.8 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

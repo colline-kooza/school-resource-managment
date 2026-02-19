@@ -1,4 +1,5 @@
 import React from "react";
+export const dynamic = "force-dynamic";
 import { columns } from "./columns";
 // import DataTable from "@/components/DataTableComponents/DataTable";
 import { getData } from "@/lib/getData";
@@ -7,7 +8,8 @@ import DataTable from "@/components/backend/DataTableComponents/DataTable";
 
 
 export default async function page() {
-  const users = await getData("users");
+  const usersData = await getData("users");
+  const users = Array.isArray(usersData) ? usersData : (usersData.users || []);
   // console.log(products);
   return (
     <div className="p-8">

@@ -10,7 +10,7 @@ import AppSidebar from "@/components/backend/dashboard/sidebar/app-sidebar";
 
 export default function DashboardLayout({children}:{children:React.ReactNode}) {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
           <AppSidebar/>
           <SidebarInset>
             <DashboardNav/>

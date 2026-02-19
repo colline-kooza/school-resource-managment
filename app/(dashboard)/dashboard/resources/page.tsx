@@ -1,33 +1,27 @@
-import React from "react";
-import { columns } from "./columns";
-// import DataTable from "@/components/DataTableComponents/DataTable";
-import { getData } from "@/lib/getData";
-import TableHeader from "@/components/backend/dashboard/Tables/TableHeader";
-import DataTable from "@/components/backend/DataTableComponents/DataTable";
+import React, { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/auth";
+import { redirect } from "next/navigation";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import ResourcesClient from "@/components/resources/ResourcesClient";
+import { SkeletonCard } from "@/components/shared/LoadingSkeleton";
 
-
-export default async function page() {
-  try {
-    const data = await getData('your-endpoint');
-    // Handle successful data
-  } catch (error) {
-    // Handle error appropriately
-    console.error('Failed to fetch data:', error);
+export default async function ResourcesPage() {
+  const session = await getServerSession(authOptions);
+  
+  if (!session) {
+    redirect("/login?auto-fill");
   }
-  const resources = await getData("resources");
-  // console.log(products);
+
   return (
-    <div className="p-8">
-      <TableHeader
-        title="resources"
-        linkTitle="Add resource"
-        href="/dashboard/resources/new"
-        data={resources}
-        model="resource"
-      />
-      <div className="py-8">
-        <DataTable data={resources} columns={columns} />
-      </div>
-    </div>
+    <DashboardLayout user={session.user}>
+      <Suspense fallback={
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+           {[1,2,3,4,5,6].map(i => <SkeletonCard key={i} />)}
+        </div>
+      }>
+        <ResourcesClient />
+      </Suspense>
+    </DashboardLayout>
   );
 }

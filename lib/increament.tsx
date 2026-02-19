@@ -1,4 +1,3 @@
-import { revalidatePath } from "next/cache";
 import toast from "react-hot-toast";
 
 export async function incrementUpVotes(answerId:any) {
@@ -16,7 +15,6 @@ export async function incrementUpVotes(answerId:any) {
         }
         toast.success("vote added")
         const updatedAnswer = await response.json();
-        revalidatePath(`/qa/${answerId}`)
     } catch (error) {
         console.log(error)
         // console.error('Error:', error.message);

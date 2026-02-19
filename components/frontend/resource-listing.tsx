@@ -145,12 +145,12 @@ export default function ResourcesPage({
 
   const filteredResources = (resources || []).filter(resource => {
     const matchesSearch = resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          resource.course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          resource.courseUnit.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          resource.user.firstName.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCampus = selectedCampus ? resource.campus.id === selectedCampus : true
-    const matchesCourse = selectedCourse ? resource.course.id === selectedCourse : true
-    const matchesCategory = selectedCategory ? resource.category.id === selectedCategory : true
+                          resource.course?.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          resource.courseUnit?.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          resource.uploadedBy?.firstName?.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCampus = selectedCampus ? resource.campus?.id === selectedCampus : true
+    const matchesCourse = selectedCourse ? resource.course?.id === selectedCourse : true
+    const matchesCategory = selectedCategory ? resource.category?.id === selectedCategory : true
 
     return matchesSearch && matchesCampus && matchesCourse && matchesCategory
   })
@@ -291,14 +291,14 @@ export default function ResourcesPage({
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 flex-grow">
-                  <p className="text-sm"><span className="font-semibold">Course:</span> {resource.course.title}</p>
-                  <p className="text-sm"><span className="font-semibold">Unit:</span> {resource.courseUnit.title}</p>
-                  <p className="text-sm"><span className="font-semibold">Campus:</span> {resource.campus.title}</p>
-                  <p className="text-sm"><span className="font-semibold">Category:</span> {resource.category.title}</p>
-                  <p className="text-sm"><span className="font-semibold">By</span> {resource.user.firstName}</p>
+                  <p className="text-sm"><span className="font-semibold">Course:</span> {resource.course?.title}</p>
+                  <p className="text-sm"><span className="font-semibold">Unit:</span> {resource.courseUnit?.title}</p>
+                  <p className="text-sm"><span className="font-semibold">Campus:</span> {resource.campus?.title}</p>
+                  <p className="text-sm"><span className="font-semibold">Category:</span> {resource.category?.title}</p>
+                  <p className="text-sm"><span className="font-semibold">By</span> {resource.uploadedBy?.firstName || "Professor"}</p>
                 </CardContent>
                 <CardFooter className="pt-2">
-                  <Link className='w-full' target='_blank' href={resource.pdfUrl}>
+                  <Link className='w-full' target='_blank' href={resource.fileUrl}>
                     <Button variant="outline" className="w-full text-sm group hover:bg-purple-500 hover:text-white">
                       <Download className="h-4 w-4 mr-2 transition-transform group-hover:scale-110" />
                       Download

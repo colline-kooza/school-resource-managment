@@ -20,7 +20,6 @@ import ImageInput from "../dashboard/FormInputs/ImageInput";
 import FormFooter from "../FormFooter";
 import TextArea from "../FormInputs/TextAreaInput";
 import toast from "react-hot-toast";
-import { revalidatePath } from "next/cache";
 import SubmitButton from "../dashboard/FormInputs/SubmitButton";
 
 

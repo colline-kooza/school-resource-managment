@@ -1,62 +1,62 @@
-import { db } from '@/prisma/db';
-import { NextResponse } from 'next/server'
-import React from 'react'
+import { db } from "@/prisma/db";
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/config/auth";
 
-// creating a new record
-export async function POST(request:any) {
+export async function POST(req: Request) {
     try {
-        const {title,slug,imageUrl,description}=await request.json();
-
-        const existingCourse=await db.course.findUnique({
-            where:{
-                slug,
-            }
-        });
-        if(existingCourse){
-            return NextResponse.json({
-                data:null,
-                message:"Course already exists"
-            },{status:409})
+        const session = await getServerSession(authOptions);
+        if (!session || session.user.role !== "ADMIN") {
+            return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        // use prisma to create the category
-        const newCourse=await db.course.create({
-            data:{title,slug}
+        const { title, code, slug, campusId, departmentId, yearOfStudy, description, imageUrl } = await req.json();
 
-        })
-        console.log(newCourse);
-        return NextResponse.json(newCourse,{status:201})
-
-    } catch (error:any) {
-        console.log("error while creating course",error)
-        return NextResponse.json({
-            message:"Failed to create course",
-            error:error.message
-        },{status:500})
-        
-    }
-
-}
-
-// getting a record
-export async function GET(request:any){
-    try {
-        const courses=await db.course.findMany({
-            orderBy:{
-                createdAt:"desc"
-            }
+        const existing = await db.course.findUnique({
+            where: { slug }
         });
-        return NextResponse.json(courses);
-    } catch (error:any) {
-        console.log("error while fetching courses",error)
-        return NextResponse.json({
-            message:"Failed to fetch courses",
-            error:error.message
-        },{status:500})
-        
+
+        if (existing) {
+            return new NextResponse("Course with this slug already exists", { status: 409 });
+        }
+
+        const course = await db.course.create({
+            data: { title, code, slug, campusId, departmentId, yearOfStudy, description, imageUrl }
+        });
+
+        return NextResponse.json(course);
+
+    } catch (error) {
+        console.error("[COURSES_POST]", error);
+        return new NextResponse("Internal Error", { status: 500 });
     }
 }
 
+export async function GET(req: Request) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const departmentId = searchParams.get("departmentId");
+        const campusId = searchParams.get("campusId");
 
+        const where: any = {};
+        if (departmentId && departmentId !== "all") where.departmentId = departmentId;
+        if (campusId && campusId !== "all") where.campusId = campusId;
 
+        const courses = await db.course.findMany({
+            where,
+            include: {
+                campus: { select: { title: true } },
+                department: { select: { title: true } },
+                _count: {
+                    select: { units: true, users: true }
+                }
+            },
+            orderBy: { createdAt: "desc" }
+        });
 
+        return NextResponse.json(courses);
+    } catch (error) {
+        console.error("[COURSES_GET]", error);
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}

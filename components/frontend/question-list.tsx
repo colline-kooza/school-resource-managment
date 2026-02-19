@@ -36,7 +36,7 @@ export default function QuestionList({ questions,answers}:{questions:any,answers
             <div className="flex items-start space-x-4">
               
               <div className="flex-grow">
-                <h3 className="text-xl font-semibold text-green-600 dark:text-green-400 mb-2">
+                <h3 className="text-xl font-semibold text-[#163360] dark:text-blue-400 mb-2">
                   <Link href={`/qa/${question.id}`} className="hover:underline">{question.title}</Link>
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{question.content}</p>
@@ -48,7 +48,7 @@ export default function QuestionList({ questions,answers}:{questions:any,answers
                       </Avatar>
                       <div className="text-sm sm:flex">
                         <span className="text-gray-600 dark:text-gray-400">Posted by </span>
-                        <a href="#" className="font-medium text-green-600 dark:text-green-400 hover:underline">
+                        <a href="#" className="font-medium text-[#163360] dark:text-blue-400 hover:underline">
                           {question.user.name}
                         </a>
                       </div>
@@ -57,11 +57,11 @@ export default function QuestionList({ questions,answers}:{questions:any,answers
                         {formatDate(question.createdAt)}
                       </div>
                     </div>
-                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                      {question.course.title}
+                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-[#163360] dark:bg-blue-900 dark:text-blue-200">
+                      {question.course?.title}
                     </span>
-                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                      {question.courseUnit}
+                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-[#163360] dark:bg-blue-900 dark:text-blue-200">
+                      {question.courseUnit?.title}
                     </span>
                   </div>
                   <div className="flex items-center justify-end space-x-4 text-sm text-gray-500 dark:text-gray-400">

@@ -16,8 +16,8 @@ import SelectInput from "../dashboard/FormInputs/SelectInput";
 import QuillEditor from "../dashboard/FormInputs/QuilEditor";
 import TextArea from "../FormInputs/TextAreaInput";
 import FormFooter from "../FormFooter";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
  
 
 
@@ -37,6 +37,10 @@ export default function CreateQuestions({campuses,user,courses,categories}:{camp
     });
   
     async function onSubmit(data: any) {
+      if(!user || !user.id){
+        toast.error("Please login first to ask a question");
+        return;
+      }
       data.userId=user.id
       
       const endPoint = '/api/questions'; 
@@ -44,7 +48,7 @@ export default function CreateQuestions({campuses,user,courses,categories}:{camp
       router.push("/qa")
       const redirect ="/qa"
       
-    //   revalidatePath("/qa")
+      
       console.log(data);
   
       await makePostRequest({

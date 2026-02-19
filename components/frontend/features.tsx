@@ -1,67 +1,55 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { MessageSquare, Users, BookOpen, Check } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { FileText, Brain, MessageSquare, Bell } from "lucide-react"
 
-export default function AgricultureFeatures() {
+export default function LearningFeatures() {
   const features = [
     {
+      icon: FileText,
+      title: "Resources",
+      description: "Access past papers, lecture notes, and videos tailored for your specific course units.",
+      color: "bg-blue-50 text-[#163360]",
+    },
+    {
       icon: MessageSquare,
-      title: "Forum/Q&A",
-      description: "Ask and answer questions, share tips, and solve agricultural issues.",
-      keyFeatures: [
-        "Question posting with relevant tags",
-        "Answering mechanism with comments",
-        "Voting system for quality answers",
-        "Accepted answer marking",
-        "Badges and rewards for engagement",
-      ],
+      title: "Q&A Forum",
+      description: "Ask questions and get verified answers from your peers and lecturers across departments.",
+      color: "bg-orange-50 text-[#F4A800]",
     },
     {
-      icon: Users,
-      title: "Community Discussions",
-      description: "Engage in topic-based discussions on broader agricultural issues.",
-      keyFeatures: [
-        "Discussion threads with titles and content",
-        "Organized categories (e.g., organic farming, pest control)",
-        "Comments and nested replies",
-        "Sorting options (newest, most popular, most commented)",
-      ],
+      icon: Brain,
+      title: "Quizzes",
+      description: "Test your knowledge with unit-specific quizzes designed by lecturers to help you prepare.",
+      color: "bg-blue-50 text-[#163360]",
     },
     {
-      icon: BookOpen,
-      title: "Knowledge Base",
-      description: "Access a searchable archive of articles, guides, and resources.",
-      keyFeatures: [
-        "Categorized content on various agricultural topics",
-        "Tags and filtering options",
-        "Rich media support (images, videos, infographics)",
-        "Easy-to-navigate structure",
-      ],
+      icon: Bell,
+      title: "Announcements",
+      description: "Stay updated with important campus events, course changes, and university news.",
+      color: "bg-purple-50 text-purple-600",
     },
   ]
 
   return (
-    <section className="w-full px-4 md:px-12 lg:px-24 py-4 md:py-6 bg-white text-green-900">
+    <section className="w-full px-4 md:px-12 lg:px-24 py-16 bg-white text-[#163360]">
       <div className="container px-4 md:px-6">
-        <h2 className="text-xl font-bold tracking-tighter sm:text-3xl text-center mb-12">
-          Empowering Agriculture Through Community and Knowledge
-        </h2>
-        <div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#163360] mb-4">
+            Everything you need to succeed
+          </h2>
+          <p className="text-base text-slate-500 max-w-[800px] mx-auto font-medium">
+            BusiLearn provides a centralized hub for all your academic needs.
+          </p>
+        </div>
+        
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <Card key={index} className="flex flex-col h-full bg-slate-100 text-slate-600">
-              <CardHeader>
-                <feature.icon className="w-10 h-10 mb-4 text-green-300" />
-                <CardTitle className="text-2xl font-bold">{feature.title}</CardTitle>
-                <CardDescription className="text-green-100">{feature.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <ul className="space-y-2">
-                  {feature.keyFeatures.map((keyFeature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center">
-                      <Check className="w-5 h-5 mr-2 text-green-300" />
-                      <span>{keyFeature}</span>
-                    </li>
-                  ))}
-                </ul>
+            <Card key={index} className="group flex flex-col h-full border-none shadow-sm hover:shadow-xl transition-all duration-300 bg-white rounded-3xl p-2">
+              <CardContent className="pt-8 text-center flex flex-col items-center">
+                <div className={`${feature.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                  <feature.icon className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-bold text-[#163360] mb-3">{feature.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{feature.description}</p>
               </CardContent>
             </Card>
           ))}
@@ -70,4 +58,5 @@ export default function AgricultureFeatures() {
     </section>
   )
 }
+
 

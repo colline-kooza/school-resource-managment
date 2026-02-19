@@ -42,7 +42,7 @@ export default function RegisterForm({course,campus}:{course:any,campus:any}) {
       } else if (res.status === 200) {
         setLoading(false);
         toast.success("Account Created successfully");
-        router.push("/login");
+        router.push("/login?auto-fill");
       } else {
         setLoading(false);
         toast.error("Something went wrong");
@@ -179,7 +179,7 @@ export default function RegisterForm({course,campus}:{course:any,campus:any}) {
         <p className="mt-6 text-left text-sm text-gray-500">
           Already Registered ?{" "}
           <Link
-            href="/login"
+            href="/login?auto-fill"
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
           >
             Login

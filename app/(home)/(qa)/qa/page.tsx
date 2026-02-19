@@ -1,14 +1,18 @@
 import MainSidebar from "@/components/frontend/main-sidebar";
+export const dynamic = "force-dynamic";
 import QaHero from "@/components/frontend/qa-hero";
 import QuestionList from "@/components/frontend/question-list";
 import RightSidebar from "@/components/frontend/right-sidebar";
 import { getData } from "@/lib/getData";
 
 
-export default async function Home() {
-  const questions=await getData("questions");
-  const resources=await getData("resources");
-  const answers=await getData("answers");
+export default async function QaPage() {
+  const questionsData = await getData("questions");
+  const questions = Array.isArray(questionsData) ? questionsData : (questionsData.questions || []);
+  const resourcesData = await getData("resources");
+  const resources = Array.isArray(resourcesData) ? resourcesData : (resourcesData.resources || []);
+  const answersData = await getData("answers");
+  const answers = Array.isArray(answersData) ? answersData : (answersData.answers || []);
 
   // console.log(questions);
   return (

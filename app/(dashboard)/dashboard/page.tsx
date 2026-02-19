@@ -1,9 +1,18 @@
-import React from 'react'
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/auth";
+import { redirect } from "next/navigation";
+import StudentDashboard from "@/components/dashboard/StudentDashboard";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
-export default function page() {
+export default async function DashboardPage() {
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/login?auto-fill");
+
   return (
-    <div>
-        <h2>Dashboard</h2>
-    </div>
-  )
+    <DashboardLayout user={session.user}>
+      <StudentDashboard user={session.user} />
+    </DashboardLayout>
+  );
 }
+
+

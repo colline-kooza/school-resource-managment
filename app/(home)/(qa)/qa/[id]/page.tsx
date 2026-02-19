@@ -1,5 +1,5 @@
-
 // app/(home)/qa/[id]/page.tsx
+export const dynamic = "force-dynamic";
 import QuestionDetail from '@/components/frontend/question-details';
 import { getData } from '@/lib/getData';
 import { getSingleDataItem } from '@/lib/getSingleDataItem';
@@ -13,7 +13,7 @@ export default async function QuestionPage({params}: {params: Promise<{ id: stri
     const endPoint = 'questions';
     
     const [question, questions] = await Promise.all([
-      getSingleDataItem(id, endPoint),,
+      getSingleDataItem(id, endPoint),
       getData(endPoint)
     ]);
 

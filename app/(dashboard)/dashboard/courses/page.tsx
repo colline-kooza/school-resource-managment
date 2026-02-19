@@ -1,4 +1,5 @@
 import React from "react";
+export const dynamic = "force-dynamic";
 import { columns } from "./columns";
 // import DataTable from "@/components/DataTableComponents/DataTable";
 import { getData } from "@/lib/getData";

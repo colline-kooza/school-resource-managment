@@ -10,8 +10,17 @@ interface SelectInputProps {
   className?: string;
   options: { id: string; title: string }[];
   multiple?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange?: (value: string) => void;
+  placeholder?: string;
 }
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function SelectInput({
   label,
@@ -23,6 +32,7 @@ export default function SelectInput({
   options = [],
   multiple = false,
   onChange, // Add onChange prop here
+  placeholder,
 }: SelectInputProps) {
   return (
     <div className={className}>
@@ -33,22 +43,26 @@ export default function SelectInput({
         {label}
       </label>
       <div className="mt-2">
-        <select
-          {...register(name)}
-          id={name}
-          multiple={multiple}
-          name={name}
-          className="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-          onChange={onChange} // Apply onChange here
+        <Select
+          onValueChange={(value) => {
+            register(name).onChange({ target: { name, value } });
+            if (onChange) onChange(value);
+          }}
+          defaultValue={register(name).value}
         >
-          {options.map((option, i) => (
-            <option key={i} value={option.id}>
-              {option.title}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full h-11 rounded-xl border-slate-200 focus:ring-[#163360] focus:border-[#163360]">
+            <SelectValue placeholder={placeholder || `Select ${label}`} />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl border-slate-100">
+            {options.map((option) => (
+              <SelectItem key={option.id} value={option.id}>
+                {option.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {errors[name] && (
-          <span className="text-sm text-red-600">{label} is required</span>
+          <p className="mt-1 text-xs font-bold text-red-600">{label} is required</p>
         )}
       </div>
     </div>
