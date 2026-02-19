@@ -16,7 +16,6 @@ import {
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-    SidebarRail,
   } from "@/components/ui/sidebar";
 
 import {
@@ -39,11 +38,8 @@ import {
     ChevronRight,
     ChevronsUpDown,
     CreditCard,
-    Folder,
     Home,
     LogOut,
-    Map,
-    PieChart,
     Settings2,
     Sparkles,
     SquareTerminal,
@@ -172,11 +168,9 @@ export default function AppSidebar() {
       ],
     },
   ];
-  
-  
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r-0">
         <SidebarHeader className="pt-4">
           <SidebarMenu>
             <SidebarMenuItem>
@@ -315,7 +309,6 @@ export default function AppSidebar() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
-        <SidebarRail />
       </Sidebar>
   )
 }
