@@ -24,11 +24,11 @@ import { BarChart, BookMarked } from "lucide-react";
 
 export default function SiteHeader({ session }: { session: Session | null }) {
   const navigation = [
+    { name: "Resources", href: "/resources" },
     { name: "Community", href: "/community" },
     { name: "Forum/Q&A", href: "/qa" },
-    // { name: "Forum", href: "/forum" },
-    { name: "About", href: "/about" },
     { name: "Knowledge Base", href: "/knowledge" },
+    { name: "About", href: "/about" },
   ];
   const router = useRouter();
   async function handleLogout() {

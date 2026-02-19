@@ -3,18 +3,37 @@
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import DashboardSidebar from "./DashboardSidebar";
-import { Menu, Search, Bell, Grid, Share2, ArrowLeft } from "lucide-react";
+import { Menu, Search, Bell, Grid, Share2, ArrowLeft, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
   user: any;
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: (collapsed: boolean) => void;
 }
 
-const DashboardHeader: React.FC<HeaderProps> = ({ user }) => {
+const DashboardHeader: React.FC<HeaderProps> = ({ 
+  user, 
+  sidebarCollapsed, 
+  setSidebarCollapsed 
+}) => {
   return (
     <header className="h-20 px-4 md:px-10 flex items-center justify-between border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-30">
       <div className="flex items-center gap-4">
+        {/* Desktop Sidebar Toggle */}
+        <button 
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="hidden lg:flex p-2.5 hover:bg-slate-50 rounded-xl text-slate-400 hover:text-[#1A3A6B] transition-all active:scale-95"
+          title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+        >
+          {sidebarCollapsed ? (
+            <PanelLeftOpen className="w-5 h-5 text-[#F4A800]" />
+          ) : (
+            <PanelLeftClose className="w-5 h-5" />
+          )}
+        </button>
+
         {/* Mobile Sidebar Trigger */}
         <div className="lg:hidden">
           <Sheet>

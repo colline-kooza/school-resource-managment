@@ -15,6 +15,7 @@ interface LayoutProps {
 
 const DashboardLayout: React.FC<LayoutProps> = ({ children, user }) => {
   const pathname = usePathname();
+  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
 
   const getDashboardHref = () => {
     if (user.role === "ADMIN") return "/admin";
@@ -31,15 +32,22 @@ const DashboardLayout: React.FC<LayoutProps> = ({ children, user }) => {
   ];
 
   return (
-    <div className="flex h-screen w-full bg-[#F5F7FA] overflow-hidden text-slate-900 relative">
+    <div className="flex h-screen w-full bg-[#F5F7FA] overflow-hidden text-slate-900 relative font-Inter">
       {/* Sidebar - Desktop Only */}
-      <div className="hidden lg:flex h-full">
-        <DashboardSidebar user={user} />
+      <div className={cn(
+        "hidden lg:flex h-full transition-all duration-300",
+        sidebarCollapsed ? "w-[80px]" : "w-[280px]"
+      )}>
+        <DashboardSidebar user={user} collapsed={sidebarCollapsed} />
       </div>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        <DashboardHeader user={user} />
+        <DashboardHeader 
+          user={user} 
+          sidebarCollapsed={sidebarCollapsed} 
+          setSidebarCollapsed={setSidebarCollapsed} 
+        />
         
         <main className="flex-1 overflow-y-auto no-scrollbar pb-32 lg:pb-12 scroll-smooth">
           <div className="max-w-[1600px] mx-auto p-4 md:p-10">
