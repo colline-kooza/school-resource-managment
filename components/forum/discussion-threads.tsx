@@ -7,7 +7,7 @@ const threads = [
   {
     id: 1,
     title: 'Tips for solving differential equations?',
-    author: { name: 'Alice Johnson', avatar: '/placeholder.svg?height=40&width=40', initials: 'AJ' },
+    author: { name: 'Alice Johnson', avatar: '', initials: 'AJ' },
     category: 'Engineering Math',
     replies: 23,
     likes: 45,
@@ -17,7 +17,7 @@ const threads = [
   {
     id: 2,
     title: 'Best resources for learning machine learning?',
-    author: { name: 'Bob Smith', avatar: '/placeholder.svg?height=40&width=40', initials: 'BS' },
+    author: { name: 'Bob Smith', avatar: '', initials: 'BS' },
     category: 'Computer Science',
     replies: 18,
     likes: 32,

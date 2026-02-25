@@ -23,7 +23,7 @@ export default async function QaPage() {
         <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8 h-full">
           <MainSidebar className="w-full lg:w-64 shrink-0 overflow-y-auto lg:sticky lg:top-8"/>
           <div className="flex-grow">
-            <QuestionList questions={questions} answers={answers}/>
+            <QuestionList initialQuestions={questions} initialAnswers={answers}/>
           </div>
           <RightSidebar resources={resources} className="w-full lg:w-80 shrink-0 overflow-y-auto lg:sticky lg:top-8" />
         </div>

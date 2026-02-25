@@ -74,6 +74,20 @@ export async function GET(req: Request) {
           },
           courseUnit: {
             select: { title: true }
+          },
+          answers: {
+            take: 3,
+            orderBy: { createdAt: "desc" },
+            include: {
+              user: {
+                select: {
+                  name: true,
+                  firstName: true,
+                  lastName: true,
+                  image: true,
+                }
+              }
+            }
           }
         },
         orderBy,

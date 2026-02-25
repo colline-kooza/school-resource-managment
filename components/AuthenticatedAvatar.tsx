@@ -23,7 +23,7 @@ export default function AuthenticatedAvatar({
       <DropdownMenuTrigger className="cursor-pointer" asChild>
         <Avatar>
           <AvatarImage
-            src={session?.user?.image ?? "/default-avatar.png"}  
+            src={session?.user?.image ?? ""}  
             alt={session?.user?.name ?? "User avatar"}
           />
           <AvatarFallback>{getInitials(session?.user?.name)}</AvatarFallback>

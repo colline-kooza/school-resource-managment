@@ -51,7 +51,7 @@ const MessageBubble: React.FC<{ message: Message; isVisible: boolean }> = ({
       {message.type === 'ai' ? (
         <div className="flex justify-start items-end gap-3">
           <img
-            src={aiAvatar || "/placeholder.svg"}
+            src={aiAvatar}
             alt="AI Avatar"
             className="w-8 h-8 rounded-full object-cover flex-shrink-0"
           />
@@ -87,7 +87,7 @@ const MessageBubble: React.FC<{ message: Message; isVisible: boolean }> = ({
             <div className="text-sm font-medium leading-snug">{message.text}</div>
           </div>
           <img
-            src={userAvatar || "/placeholder.svg"}
+            src={userAvatar}
             alt="User Avatar"
             className="w-8 h-8 rounded-full object-cover flex-shrink-0"
           />

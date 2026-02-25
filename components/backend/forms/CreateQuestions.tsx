@@ -9,15 +9,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Category } from "@prisma/client";
-import makePostRequest from "@/lib/makePostRequest";
-import FormHeader from "../FormHeader";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from "@/lib/api";
 import TextInput from "../dashboard/FormInputs/TextInput";
 import SelectInput from "../dashboard/FormInputs/SelectInput";
-import QuillEditor from "../dashboard/FormInputs/QuilEditor";
 import TextArea from "../FormInputs/TextAreaInput";
 import FormFooter from "../FormFooter";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
  
 
 
@@ -31,9 +30,22 @@ type CategoryFormProps = {
 };
 export default function CreateQuestions({campuses,user,courses,categories}:{campuses:any,user:any,courses:any,categories:any}) {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
-    const { register,watch, handleSubmit, reset, formState: { errors } } = useForm({
-     
+    const queryClient = useQueryClient();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const mutation = useMutation({
+      mutationFn: async (data: any) => {
+        const res = await api.post('/api/questions', data);
+        return res.data;
+      },
+      onSuccess: () => {
+        toast.success("Question posted successfully!");
+        reset();
+        queryClient.invalidateQueries({ queryKey: ["questions"] });
+        router.push("/qa");
+      },
+      onError: (error: any) => {
+        toast.error(error.response?.data || "Failed to post question");
+      }
     });
   
     async function onSubmit(data: any) {
@@ -41,84 +53,59 @@ export default function CreateQuestions({campuses,user,courses,categories}:{camp
         toast.error("Please login first to ask a question");
         return;
       }
-      data.userId=user.id
-      
-      const endPoint = '/api/questions'; 
-      const resourceName = 'Question';
-      router.push("/qa")
-      const redirect ="/qa"
-      
-      
-      console.log(data);
-  
-      await makePostRequest({
-        setLoading,
-        endPoint,
-        data,
-        resourceName,
-        reset,
-        redirect,
-        router // Pass the router object obtained from useRouter
-      });
+      data.userId=user.id;
+      mutation.mutate(data);
     }
 
 
   return (
-    <div className="max-w-3xl mt-4 mx-auto">
-      <form className="" onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-12 gap-6 py-8">
-        <div className="lg:col-span-12 col-span-full space-y-3">
-         <div className="">
-         <div className="grid gap-6">
-                <div className="grid mt-4 gap-3">
-                  <TextInput
-                    register={register}
-                    errors={errors}
-                    label="Question title"
-                    name="title"
-                  />
-                
-                </div>
-                <div className="grid grid-cols-2 mt-4 gap-3">
-                <TextInput
-                    register={register}
-                    errors={errors}
-                    label="Course unit"
-                    name="courseUnit"
-                  />
-                <SelectInput
-        label="Select Course"
-        name="courseId"
-        register={register}
-        errors={errors}
-        // isRequired
-        multiple={false}
-        type=""
-        className=''
-        options={courses}
-      />
-    </div>
-    <div className="mt-4">
-         <TextArea
-         register={register}
-         errors={errors}
-          label="Describe your question"
-        name="content"
+    <div className="max-w-2xl mx-auto px-1 py-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <div className="space-y-5">
+          <TextInput
+            register={register}
+            errors={errors}
+            label="Question title"
+            name="title"
+            placeholder="e.g., How to implement optimistic updates in React Query?"
           />
-    </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <TextInput
+              register={register}
+              errors={errors}
+              label="Course unit (Optional)"
+              name="courseUnit"
+              placeholder="e.g., BIT 2104"
+            />
+            <SelectInput
+              label="Associated Course"
+              name="courseId"
+              register={register}
+              errors={errors}
+              options={courses}
+              className="text-xs"
+            />
+          </div>
+
+          <TextArea
+            register={register}
+            errors={errors}
+            label="Describe your question"
+            name="content"
+          />
         </div>
-         </div>
-               <FormFooter
-                href="/resources"
-                editingId={""}
-                loading={loading}
-                title="create resource"
-                parent=""
-              />
+
+        <div className="pt-4 mt-6 border-t border-slate-100">
+          <FormFooter
+            href="/qa"
+            editingId={""}
+            loading={mutation.isPending}
+            title="Post Question"
+            parent=""
+          />
         </div>
-      </div>
-     
-    </form>
+      </form>
     </div>
   );
 }

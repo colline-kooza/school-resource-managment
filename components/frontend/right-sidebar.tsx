@@ -32,9 +32,9 @@ export default function RightSidebar({ className,resources }: RightSidebarProps)
         </CardHeader>
         <CardContent className="space-y-4">
           {[
-            { title: "Tips for Final Exams", author: "Alex Kim", replies: 23, avatar: "/placeholder.svg?height=32&width=32", initials: "AK" },
-            { title: "Study Group for Economics", author: "Maria Garcia", replies: 15, avatar: "/placeholder.svg?height=32&width=32", initials: "MG" },
-            { title: "Research Paper Guidelines", author: "James Wilson", replies: 19, avatar: "/placeholder.svg?height=32&width=32", initials: "JW" }
+            { title: "Tips for Final Exams", author: "Alex Kim", replies: 23, avatar: "", initials: "AK" },
+            { title: "Study Group for Economics", author: "Maria Garcia", replies: 15, avatar: "", initials: "MG" },
+            { title: "Research Paper Guidelines", author: "James Wilson", replies: 19, avatar: "", initials: "JW" }
           ].map((discussion) => (
             <div key={discussion.title} className="flex items-start space-x-3">
               <Avatar className="h-8 w-8">

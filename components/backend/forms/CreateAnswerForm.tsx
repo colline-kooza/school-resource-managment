@@ -13,13 +13,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import makePostRequest from "@/lib/makePostRequest";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from "@/lib/api";
 import FormHeader from "../FormHeader";
 import TextInput from "../dashboard/FormInputs/TextInput";
 import ImageInput from "../dashboard/FormInputs/ImageInput";
 import FormFooter from "../FormFooter";
 import TextArea from "../FormInputs/TextAreaInput";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import SubmitButton from "../dashboard/FormInputs/SubmitButton";
 
 
@@ -27,53 +28,30 @@ import SubmitButton from "../dashboard/FormInputs/SubmitButton";
 export default function CreateAnswerForm({userId,questionId}:{userId:any,questionId:any}) {
 
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
     const { register,watch, handleSubmit, reset, formState: { errors } } = useForm({
      
     });
   
-    async function onSubmit(data: any) {
-        data.userId=userId;
-        data.questionId=questionId
-   console.log(data)
-      const endPoint = '/api/answers'; 
-      const resourceName = 'Answer';
-
-
-  
-      try {
-        setLoading(true);
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-        const response = await fetch(`${baseUrl}/api/answers`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
-    
-        if (response.ok) {
-          toast.success(`New response recorded`);
-          reset();
-          setLoading(false);
-                // Trigger revalidation
-      await fetch(`${baseUrl}/api/revalidate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ path: `/questions/${questionId}` }), // Revalidate the question's page
-      });
-          
-        } else {
-          setLoading(false);
-          throw new Error(`Failed to create ${resourceName}`);
-        }
-      } catch (error) {
-        setLoading(false);
-        console.error("Error making POST request:", error);
-        toast.error(`Failed to create ${resourceName}: ${error}`);
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+      mutationFn: async (data: any) => {
+        const res = await api.post('/api/answers', data);
+        return res.data;
+      },
+      onSuccess: () => {
+        toast.success("Answer posted!");
+        reset();
+        queryClient.invalidateQueries({ queryKey: ["questions"] });
+      },
+      onError: (error: any) => {
+        toast.error(error.response?.data || "Failed to post answer");
       }
+    });
+  
+    async function onSubmit(data: any) {
+        data.userId = userId;
+        data.questionId = questionId;
+        mutation.mutate(data);
     }
 
 
@@ -91,7 +69,7 @@ export default function CreateAnswerForm({userId,questionId}:{userId:any,questio
               <SubmitButton
                       text=""
                       title="Post answer"
-                      loading={loading}
+                      loading={mutation.isPending}
                     />
             </div>
           </CardContent>

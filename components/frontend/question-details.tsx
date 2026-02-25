@@ -56,8 +56,8 @@ export default function QuestionDetail({question,answers}:{question:any,answers:
             <div className="flex items-center gap-4 text-sm">
               <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>{question.user.image}</AvatarFallback>
+                  <AvatarImage src={question.user.image ?? ""} />
+                  <AvatarFallback>{question.user.firstName?.[0]}</AvatarFallback>
                 </Avatar>
                 <span>Posted by {question.user.firstName}</span>
               </div>

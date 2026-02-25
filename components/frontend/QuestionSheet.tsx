@@ -1,65 +1,75 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { authOptions } from "@/config/auth";
-import { getData } from "@/lib/getData";
-import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
 import CreateQuestions from "../backend/forms/CreateQuestions";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/lib/api";
 
-export async function QuestionSheet() {
-     const courseData=await getData("courses");
-           const categoryData=await getData("categories");
-           const campusData=await getData("campuses");
-           const session = await getServerSession(authOptions);
-           const user =session?.user
-            const courses= courseData.map((item:any,i:any)=>{
-              return(
-                {
-                  title:item.title,
-                  id:item.id
-                }
-              )
-            })
-            const categories= categoryData.map((item:any,i:any)=>{
-              return(
-                {
-                  title:item.title,
-                  id:item.id
-                }
-              )
-            })
-            const campuses= campusData.map((item:any,i:any)=>{
-              return(
-                {
-                  title:item.title,
-                  id:item.id
-                }
-              )
-            })
+export function QuestionSheet() {
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  const { data: courses = [] } = useQuery({
+    queryKey: ["courses"],
+    queryFn: async () => {
+      const res = await api.get("/api/courses");
+      return res.data.map((item: any) => ({ title: item.title, id: item.id }));
+    }
+  });
+
+  const { data: categories = [] } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await api.get("/api/categories");
+      return res.data.map((item: any) => ({ title: item.title, id: item.id }));
+    }
+  });
+
+  const { data: campuses = [] } = useQuery({
+    queryKey: ["campuses"],
+    queryFn: async () => {
+      const res = await api.get("/api/campuses");
+      return res.data.map((item: any) => ({ title: item.title, id: item.id }));
+    }
+  });
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" className="bg-purple-600 text-white">Ask Question</Button>
+        <Button className="bg-[#1A3A6B] hover:bg-[#122b52] text-white font-bold text-xs px-6 rounded-full shadow-lg shadow-[#1A3A6B]/20 transition-all">
+          Ask Question
+        </Button>
       </SheetTrigger>
-      <SheetContent className="w-1/2">
-         <CreateQuestions user={user} categories={categories} courses={courses} campuses={campuses}/>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">
-                Close
-            </Button>
-          </SheetClose>
-        </SheetFooter>
+      <SheetContent className="sm:max-w-[600px] w-full p-0">
+        <div className="h-full flex flex-col">
+          <SheetHeader className="p-6 border-b border-slate-100 bg-slate-50/50">
+            <SheetTitle className="text-xl font-bold text-[#1A3A6B]">Ask a Question</SheetTitle>
+            <SheetDescription className="text-xs text-slate-500">
+              Share your challenge with the community. Detailed questions get faster answers.
+            </SheetDescription>
+          </SheetHeader>
+          
+          <div className="flex-1 overflow-y-auto">
+            <CreateQuestions user={user} categories={categories} courses={courses} campuses={campuses}/>
+          </div>
+          
+          <div className="p-4 border-t border-slate-100 bg-white">
+            <SheetClose asChild>
+              <Button variant="ghost" className="w-full text-slate-500 font-bold text-xs uppercase tracking-widest hover:bg-slate-50">
+                Cancel
+              </Button>
+            </SheetClose>
+          </div>
+        </div>
       </SheetContent>
     </Sheet>
   )

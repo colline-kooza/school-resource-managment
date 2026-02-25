@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import api from "@/lib/api";
 import { Plus, Search, LayoutGrid, List, SlidersHorizontal, MessageSquarePlus } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,9 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { Pagination } from "@/components/shared/Pagination";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { QuestionSheet } from "../frontend/QuestionSheet";
 
 // Simple debounce
 function debounce(fn: Function, ms: number) {
@@ -23,9 +25,6 @@ function debounce(fn: Function, ms: number) {
 }
 
 const QAOverview = () => {
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [activeFilters, setActiveFilters] = useState({
@@ -36,9 +35,9 @@ const QAOverview = () => {
     sort: "newest"
   });
 
-  const fetchQuestions = async () => {
-    setLoading(true);
-    try {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["questions", page, activeFilters, search],
+    queryFn: async () => {
       const searchParamsObj: Record<string, string> = {
         page: page.toString(),
         search,
@@ -49,21 +48,14 @@ const QAOverview = () => {
       };
       const params = new URLSearchParams(searchParamsObj);
       if (activeFilters.resolved) params.set("resolved", "true");
-      else params.delete("resolved");
-
+      
       const res = await api.get(`/api/questions?${params.toString()}`);
-      setQuestions(res.data.questions);
-      setTotal(res.data.pagination.total);
-    } catch (error) {
-      toast.error("Failed to load questions");
-    } finally {
-      setLoading(false);
-    }
-  };
+      return res.data;
+    },
+  });
 
-  useEffect(() => {
-    fetchQuestions();
-  }, [page, activeFilters, search]);
+  const questions = data?.questions || [];
+  const total = data?.pagination?.total || 0;
 
   const debouncedSearch = useCallback(
     debounce((val: string) => setSearch(val), 500),
@@ -73,20 +65,17 @@ const QAOverview = () => {
   return (
     <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 py-12 font-Inter">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
         <div className="max-w-xl">
-           <h1 className="text-4xl sm:text-5xl font-bold text-[#1A3A6B] tracking-tight mb-4">Community Quiz & Answers</h1>
-           <p className="text-lg font-medium text-slate-500 leading-relaxed">
+           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1A3A6B] tracking-tight mb-3">Community Q&A</h1>
+           <p className="text-base font-medium text-slate-500 leading-relaxed">
              Ask questions, share knowledge, and learn from your peers and lecturers at Arapai Campus.
            </p>
         </div>
         
-        <Link href="/qa/ask">
-           <Button className="h-16 px-10 rounded-2xl bg-[#F4A800] text-[#1A3A6B] hover:bg-[#1A3A6B] hover:text-white font-bold text-lg shadow-xl shadow-[#F4A800]/20 active:scale-95 transition-all group">
-              <MessageSquarePlus className="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform" />
-              Ask a Question
-           </Button>
-        </Link>
+        <div className="hidden lg:block">
+           <QuestionSheet />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
@@ -135,13 +124,18 @@ const QAOverview = () => {
            </div>
 
            {/* List */}
-           {loading ? (
+           {isLoading ? (
              <div className="space-y-6">
                {[1, 2, 3, 4, 5].map(i => <SkeletonCard key={i} />)}
              </div>
+           ) : isError ? (
+             <div className="text-center py-20">
+                <p className="text-rose-500 font-bold">Failed to load questions. Please try again.</p>
+                <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">Retry</Button>
+             </div>
            ) : questions.length > 0 ? (
              <div className="space-y-6">
-               {questions.map((q) => (
+               {questions.map((q:any) => (
                  <QuestionCard 
                    key={q.id}
                    id={q.id}
