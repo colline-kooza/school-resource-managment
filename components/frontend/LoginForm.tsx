@@ -1,5 +1,5 @@
 "use client";
-import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, GraduationCap, Loader2, Lock, Mail, ShieldCheck, User } from "lucide-react";
 import React, { Suspense, useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -64,6 +64,56 @@ export default function LoginForm() {
             Login in to your account
           </h2>
           <p className="text-xs">Welcome Back, fill in details to login</p>
+        </div>
+        <div className="grid grid-cols-1 gap-2 mb-6">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onSubmit({ email: "student@busilearn.ac.ug", password: "Student@123" })}
+            className="flex items-center justify-start gap-3 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+            disabled={loading}
+          >
+            <User className="w-4 h-4" />
+            <div className="text-left">
+              <p className="text-sm font-semibold">Login as Student</p>
+              <p className="text-[10px] text-gray-500">Full access to learning resources</p>
+            </div>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onSubmit({ email: "lecturer@busilearn.ac.ug", password: "Lecturer@123" })}
+            className="flex items-center justify-start gap-3 hover:bg-green-50 hover:text-green-600 transition-colors"
+            disabled={loading}
+          >
+            <GraduationCap className="w-4 h-4" />
+            <div className="text-left">
+              <p className="text-sm font-semibold">Login as Lecturer</p>
+              <p className="text-[10px] text-gray-500">Manage courses and students</p>
+            </div>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onSubmit({ email: "admin@busilearn.ac.ug", password: "Admin@123" })}
+            className="flex items-center justify-start gap-3 hover:bg-purple-50 hover:text-purple-600 transition-colors"
+            disabled={loading}
+          >
+            <ShieldCheck className="w-4 h-4" />
+            <div className="text-left">
+              <p className="text-sm font-semibold">Login as Admin</p>
+              <p className="text-[10px] text-gray-500">Full system management</p>
+            </div>
+          </Button>
+        </div>
+
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-gray-200"></span>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-2 text-gray-500 font-medium">Or manual login</span>
+          </div>
         </div>
       </div>
       <div className="">
