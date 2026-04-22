@@ -65,9 +65,12 @@ const ResourceDetailPage = () => {
     setDownloading(true);
     try {
       await api.patch(`/api/resources/${resource.id}/download`);
-      // Trigger actual download
+      // DEFECT TC-07: window.open navigates to the file URL in a new tab.
+      // On desktop browsers this triggers a download, but on mobile browsers
+      // the OS opens the URL inline (or blocks it) rather than saving the file.
+      // Expected: file downloads on both desktop and mobile.
+      // Actual: download fails / opens in-browser on mobile.
       window.open(resource.fileUrl, "_blank");
-      // Refresh local count
       setResource({ ...resource, downloads: resource.downloads + 1 });
     } catch (error) {
       console.error("Download increment error:", error);

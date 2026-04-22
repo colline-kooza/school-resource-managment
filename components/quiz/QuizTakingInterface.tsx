@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import api from "@/lib/api";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Send, 
-  Clock, 
-  AlertTriangle 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Send,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -15,7 +14,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 
 export const QuizTakingInterface = ({ quizId }: { quizId: string }) => {
   const router = useRouter();
@@ -26,7 +24,6 @@ export const QuizTakingInterface = ({ quizId }: { quizId: string }) => {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [startTime] = useState(Date.now());
   const [submitting, setSubmitting] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
 
   // Fetch Quiz
   useEffect(() => {
@@ -74,6 +71,11 @@ export const QuizTakingInterface = ({ quizId }: { quizId: string }) => {
       return;
     }
 
+    // DEFECT TC-13: Simple decrement via setInterval.
+    // Browsers throttle background tabs, so the interval slows/pauses when the
+    // user switches away. The timer visually freezes and only resumes on return.
+    // Expected: timer counts down accurately regardless of tab focus.
+    // Actual: timer freezes after browser tab is switched.
     const timer = setInterval(() => {
       setTimeLeft(prev => (prev !== null ? prev - 1 : null));
     }, 1000);
@@ -190,8 +192,11 @@ export const QuizTakingInterface = ({ quizId }: { quizId: string }) => {
         </Button>
 
         {currentQuestionIndex === quiz.questions.length - 1 ? (
+          // DEFECT TC-11: handleSubmit is called directly with no unanswered-
+          // question check. Expected: warn "You have X unanswered questions.
+          // Proceed?" before submitting. Actual: submits immediately, no warning.
           <Button
-            onClick={() => setShowConfirm(true)}
+            onClick={handleSubmit}
             disabled={submitting}
             className="h-12 px-8 rounded-2xl bg-[#F4A800] hover:bg-[#F4A800]/90 text-white font-bold shadow-lg shadow-[#F4A800]/20"
           >
@@ -214,17 +219,6 @@ export const QuizTakingInterface = ({ quizId }: { quizId: string }) => {
         )}
       </div>
 
-      {/* Confirmation */}
-      <ConfirmDialog 
-        open={showConfirm}
-        onOpenChange={setShowConfirm}
-        onConfirm={handleSubmit}
-        title="Submit Quiz?"
-        description="Are you sure you want to finish and submit your answers? You cannot review them once submitted."
-        confirmLabel="Yes, Submit"
-        cancelLabel="No, Keep Reviewing"
-        danger={false}
-      />
     </div>
   );
 };

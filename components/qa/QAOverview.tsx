@@ -54,8 +54,17 @@ const QAOverview = () => {
     },
   });
 
-  const questions = data?.questions || [];
+  const _questions = data?.questions || [];
   const total = data?.pagination?.total || 0;
+
+  // DEFECT TC-17: Client-side filter uses exact full-string equality instead of
+  // a contains/includes check. q.title === search almost never matches because
+  // users type partial keywords, not entire titles verbatim.
+  // Expected: search returns all questions whose title or content contains the keyword.
+  // Actual: search returns no results even for an exact keyword match.
+  const questions = search
+    ? _questions.filter((q: any) => q.title === search)
+    : _questions;
 
   const debouncedSearch = useCallback(
     debounce((val: string) => setSearch(val), 500),

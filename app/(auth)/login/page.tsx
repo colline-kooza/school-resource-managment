@@ -4,20 +4,20 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "sonner";
 import { GraduationCap, BookOpen, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+// DEFECT TC-04: No validation schema — form submits immediately even when
+// email and password fields are empty. No error messages are shown.
+// Expected: display "Email is required" / "Password is required" before submission.
+// Actual: system allows the login attempt with empty fields, no validation shown.
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
 function getRoleRedirect(role?: string) {
   if (role === "ADMIN") return "/admin";
@@ -38,9 +38,7 @@ function LoginFormInner() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-  });
+  } = useForm<LoginFormData>();
 
   async function onSubmit(data: LoginFormData) {
     setLoading(true);
@@ -186,7 +184,8 @@ function LoginFormInner() {
           )}
         </Button>
 
-        <p className="text-center text-sm text-gray-500">
+       <div className="flex items-center gap-2">
+         <p className="text-center text-sm text-gray-500">
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
@@ -196,6 +195,8 @@ function LoginFormInner() {
             Register
           </Link>
         </p>
+        <Link className="text-sm font-black underline text-center" href="">Forgot Password</Link>
+       </div>
       </form>
     </div>
   );
