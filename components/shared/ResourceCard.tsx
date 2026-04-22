@@ -26,6 +26,7 @@ interface ResourceCardProps {
   year?: number;
   semester?: string;
   downloads: number;
+  fileUrl?: string;
   isBookmarked?: boolean;
   onBookmarkToggle?: (e: React.MouseEvent) => void;
   className?: string;
@@ -72,10 +73,20 @@ export function ResourceCard({
   year,
   semester,
   downloads,
+  fileUrl,
   isBookmarked,
   onBookmarkToggle,
   className
 }: ResourceCardProps) {
+  // DEFECT TC-07: window.open navigates to the file URL in a new tab.
+  // On desktop this triggers a save dialog; on mobile browsers the OS opens
+  // the file inline (or blocks it) rather than saving — download fails.
+  // Expected: file downloads on both desktop and mobile.
+  // Actual: download fails / opens in-browser on mobile.
+  const handleDownload = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (fileUrl) window.open(fileUrl, "_blank");
+  };
   const config = typeConfigs[type] || typeConfigs.OTHER;
   const Icon = config.icon;
 
@@ -134,21 +145,31 @@ export function ResourceCard({
         </div>
 
         <div className="flex items-center gap-2">
-           <button 
+           {fileUrl && (
+             <button
+               onClick={handleDownload}
+               title="Download (TC-07: fails on mobile)"
+               className="p-2 rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-[#1A3A6B] hover:border-blue-100 transition-all active:scale-95"
+             >
+               <Download className="w-4 h-4" />
+             </button>
+           )}
+
+           <button
              onClick={(e) => {
                e.preventDefault();
                if (onBookmarkToggle) onBookmarkToggle(e);
              }}
              className={cn(
                "p-2 rounded-xl border transition-all active:scale-95",
-               isBookmarked 
-                ? "bg-orange-50 border-orange-100 text-[#F4A800]" 
+               isBookmarked
+                ? "bg-orange-50 border-orange-100 text-[#F4A800]"
                 : "bg-white border-slate-100 text-slate-300 hover:text-[#1A3A6B] hover:border-blue-100"
              )}
            >
              <Heart className={cn("w-4 h-4", isBookmarked && "fill-[#F4A800]")} />
            </button>
-           
+
            <Link href={`/resources/${id}`}>
               <div className="p-2 rounded-xl bg-[#1A3A6B] text-white shadow-lg shadow-[#1A3A6B]/20 group-hover:bg-[#F4A800] group-hover:text-[#1A3A6B] group-hover:shadow-[#F4A800]/20 transition-all duration-300">
                 <ChevronRight className="w-4 h-4" />

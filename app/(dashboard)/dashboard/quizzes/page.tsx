@@ -1,10 +1,31 @@
-import React from "react";
+import React, { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/auth";
+import { redirect } from "next/navigation";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { QuizzesPortal } from "@/components/quiz/QuizzesPortal";
+import { SkeletonCard } from "@/components/shared/LoadingSkeleton";
 
-export default function QuizzesPage() {
+export default async function QuizzesPage() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/login?auto-fill");
+  }
+
   return (
-    <div className="min-h-screen bg-[#F5F7FA]">
-      <QuizzesPortal />
-    </div>
+    <DashboardLayout user={session.user}>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        }
+      >
+        <QuizzesPortal />
+      </Suspense>
+    </DashboardLayout>
   );
 }

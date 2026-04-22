@@ -281,16 +281,17 @@ async function main() {
   // ─── QUIZ ────────────────────────────────────────────────────────────────────
   const quiz = await db.quiz.upsert({
     where: { id: "busilearn-quiz-1" },
-    update: {},
+    update: { courseUnitId: createdAgrUnits[0].id },
     create: {
       id: "busilearn-quiz-1",
       title: "Agribusiness Fundamentals Quiz",
-      description: "Test your knowledge of basic agribusiness concepts.",
+      description: "Test your knowledge of core agribusiness concepts — markets, farm management, cooperatives, and agricultural economics. 15 questions, 30 minutes.",
       difficulty: QuizDifficulty.EASY,
       timeLimit: 30,
       passMark: 60,
       isPublished: true,
       courseId: courseAgribusiness.id,
+      courseUnitId: createdAgrUnits[0].id,
       createdById: lecturerUser.id,
     },
   });
@@ -300,7 +301,7 @@ async function main() {
       questionText: "What does GDP stand for?",
       options: ["Gross Domestic Product", "General Development Plan", "Growth and Development Policy", "Global Distribution Protocol"],
       correctAnswer: "Gross Domestic Product",
-      explanation: "GDP stands for Gross Domestic Product, a measure of economic output.",
+      explanation: "GDP stands for Gross Domestic Product, a measure of total economic output.",
     },
     {
       questionText: "Which of the following is a cash crop?",
@@ -312,24 +313,124 @@ async function main() {
       questionText: "What is the primary goal of farm management?",
       options: ["Maximize land use", "Maximize profit", "Reduce labor", "Increase crop variety"],
       correctAnswer: "Maximize profit",
-      explanation: "Farm management aims to maximize profit through efficient resource use.",
+      explanation: "Farm management aims to maximize profit through efficient resource allocation.",
     },
     {
       questionText: "Which sector does agribusiness belong to?",
       options: ["Primary sector only", "Secondary sector only", "Both primary and secondary", "Tertiary sector"],
       correctAnswer: "Both primary and secondary",
-      explanation: "Agribusiness spans both production (primary) and processing (secondary) sectors.",
+      explanation: "Agribusiness spans production (primary) and processing/marketing (secondary) sectors.",
     },
     {
       questionText: "What is a cooperative in agriculture?",
-      options: [
-        "A government farm",
-        "A group of farmers sharing resources",
-        "A type of pesticide",
-        "An irrigation system",
-      ],
+      options: ["A government farm", "A group of farmers sharing resources", "A type of pesticide", "An irrigation system"],
       correctAnswer: "A group of farmers sharing resources",
       explanation: "A cooperative is a farmer-owned business that pools resources for mutual benefit.",
+    },
+    {
+      questionText: "What does 'market price' mean in agribusiness?",
+      options: [
+        "The price set by the government",
+        "The price at which buyers and sellers agree to trade",
+        "The price printed on a product label",
+        "The minimum price allowed by law",
+      ],
+      correctAnswer: "The price at which buyers and sellers agree to trade",
+      explanation: "Market price is determined by supply and demand, where buyers and sellers meet.",
+    },
+    {
+      questionText: "What is supply chain management in agriculture?",
+      options: [
+        "Managing the planting calendar",
+        "Coordinating the flow of goods from farm to consumer",
+        "Hiring seasonal farm workers",
+        "Applying fertilizers at the right time",
+      ],
+      correctAnswer: "Coordinating the flow of goods from farm to consumer",
+      explanation: "Supply chain management oversees production, storage, transport, and sale of farm products.",
+    },
+    {
+      questionText: "What does ROI stand for in business?",
+      options: ["Rate of Inflation", "Return on Investment", "Revenue over Income", "Risk of Insolvency"],
+      correctAnswer: "Return on Investment",
+      explanation: "ROI measures the gain or loss generated relative to the amount of money invested.",
+    },
+    {
+      questionText: "What is comparative advantage in trade?",
+      options: [
+        "Producing goods at a lower opportunity cost than competitors",
+        "Having the most fertile farmland",
+        "Owning the most modern farm equipment",
+        "Selling goods at the highest price",
+      ],
+      correctAnswer: "Producing goods at a lower opportunity cost than competitors",
+      explanation: "Comparative advantage means specializing in what you can produce most efficiently relative to alternatives.",
+    },
+    {
+      questionText: "What is the law of supply?",
+      options: [
+        "As price rises, quantity supplied decreases",
+        "As price rises, quantity supplied increases",
+        "Supply is always equal to demand",
+        "Higher supply always means lower quality",
+      ],
+      correctAnswer: "As price rises, quantity supplied increases",
+      explanation: "The law of supply states that producers will offer more of a product when its price is higher.",
+    },
+    {
+      questionText: "What is vertical integration in agribusiness?",
+      options: [
+        "Farming on steep hillsides",
+        "A company controlling multiple stages of the supply chain",
+        "Growing crops in vertical layers",
+        "Importing inputs from overseas",
+      ],
+      correctAnswer: "A company controlling multiple stages of the supply chain",
+      explanation: "Vertical integration occurs when one firm owns production, processing, and distribution of a product.",
+    },
+    {
+      questionText: "What is subsistence farming?",
+      options: [
+        "Farming primarily to feed the farmer's own household",
+        "Farming using only organic methods",
+        "Large-scale commercial crop production",
+        "Farming with government subsidies",
+      ],
+      correctAnswer: "Farming primarily to feed the farmer's own household",
+      explanation: "Subsistence farming produces enough food for the family with little or no surplus for sale.",
+    },
+    {
+      questionText: "What is a budget in the context of farm management?",
+      options: [
+        "A list of all crops grown on the farm",
+        "A financial plan estimating income and expenses",
+        "The number of workers hired each season",
+        "The total area of land under cultivation",
+      ],
+      correctAnswer: "A financial plan estimating income and expenses",
+      explanation: "A farm budget projects expected revenues and costs to guide financial decision-making.",
+    },
+    {
+      questionText: "What is the primary purpose of agricultural extension services?",
+      options: [
+        "To sell farm inputs to farmers",
+        "To provide farmers with knowledge and technical advice",
+        "To set crop prices nationally",
+        "To manage government-owned farms",
+      ],
+      correctAnswer: "To provide farmers with knowledge and technical advice",
+      explanation: "Extension services transfer research-based knowledge to farmers to improve productivity.",
+    },
+    {
+      questionText: "What is a commodity in agricultural markets?",
+      options: [
+        "A luxury farm product",
+        "A standardized raw agricultural product traded in bulk",
+        "A farm machine used for harvesting",
+        "A government food aid package",
+      ],
+      correctAnswer: "A standardized raw agricultural product traded in bulk",
+      explanation: "Commodities like maize, coffee, and cotton are undifferentiated goods traded on open markets.",
     },
   ];
 
@@ -349,7 +450,7 @@ async function main() {
       },
     });
   }
-  console.log("✅ Quiz created with 5 questions");
+  console.log("✅ Quiz created with 15 questions");
 
   // ─── Q&A ─────────────────────────────────────────────────────────────────────
   const q1 = await db.question.upsert({

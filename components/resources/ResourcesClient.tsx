@@ -170,7 +170,8 @@ const ResourcesClient = () => {
                   year={resource.year}
                   semester={resource.semester}
                   downloads={resource.downloads}
-                  isBookmarked={false} // Handle bookmarks later in Step 8
+                  fileUrl={resource.fileUrl}
+                  isBookmarked={false}
                 />
               ))}
             </div>

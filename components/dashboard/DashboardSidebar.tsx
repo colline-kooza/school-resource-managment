@@ -133,17 +133,17 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ user, collapsed }) => {
           href="/resources" 
           active={pathname.startsWith("/resources")} 
         />
-        <NavItem 
-          icon={ClipboardList} 
-          label="Quizzes" 
-          href="/quizzes" 
-          active={pathname.startsWith("/quizzes")} 
+        <NavItem
+          icon={ClipboardList}
+          label="Quizzes"
+          href="/dashboard/quizzes"
+          active={pathname.startsWith("/dashboard/quizzes")}
         />
-        <NavItem 
-          icon={HelpCircle} 
-          label="Q&A Forum" 
-          href="/qa" 
-          active={pathname.startsWith("/qa")} 
+        <NavItem
+          icon={HelpCircle}
+          label="Q&A Forum"
+          href="/dashboard/qa"
+          active={pathname.startsWith("/dashboard/qa")}
         />
 
         <SectionTitle title="Account" />
