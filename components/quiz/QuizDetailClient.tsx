@@ -97,7 +97,7 @@ export const QuizDetailClient = ({ quizId }: { quizId: string }) => {
               ))}
             </div>
 
-            <Link href={`/quizzes/${quiz.id}/take`}>
+            <Link href={`/dashboard/quizzes/${quiz.id}/take`}>
               <Button className="w-full h-16 rounded-2xl bg-[#1A3A6B] hover:bg-[#1A3A6B]/90 text-white font-bold text-lg mt-10 shadow-xl shadow-[#1A3A6B]/20 transition-all hover:scale-[1.01] active:scale-[0.99]">
                 Start Assessment Now
                 <ChevronRight className="ml-2 w-6 h-6" />
@@ -129,7 +129,7 @@ export const QuizDetailClient = ({ quizId }: { quizId: string }) => {
                     Attempted on {format(new Date(quiz.lastAttempt.createdAt), "MMMM d, yyyy")}
                   </p>
                 </div>
-                <Link href={`/quizzes/${quiz.id}/take`}>
+                <Link href={`/dashboard/quizzes/${quiz.id}/take`}>
                   <Button variant="ghost" className="text-[#1A3A6B] font-bold hover:bg-slate-100 rounded-xl">
                     View Full Result
                   </Button>

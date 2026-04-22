@@ -93,7 +93,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
       </div>
 
       {/* Action */}
-      <Link href={`/quizzes/${quiz.id}`}>
+      <Link href={`/dashboard/quizzes/${quiz.id}`}>
         <Button 
           className={cn(
             "w-full h-12 rounded-2xl font-bold text-sm transition-all group-hover:scale-[1.02]",
